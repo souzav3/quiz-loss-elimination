@@ -300,7 +300,6 @@ function renderQuestion() {
               <img src="${theme.logo}" alt="Logo ${state.selectedModule.name}" class="badge-logo">
               ${state.selectedModule.name}
             </span>
-            <span class="badge">🔀 Sorteio ativo</span>
           </div>
 
           <div class="scenario-box">
