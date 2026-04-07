@@ -90,7 +90,7 @@ function getMotivation(percent) {
     return "Muito bom. Seu raciocínio está alinhado com a estrutura do 6W2H e você está no caminho certo.";
   }
 
-  return "Excelente desempenho. Você demonstrou forte compreensão da lógica do 6W2H aplicada ao módulo.";
+  return "Excelente desempenho. Você demonstrou forte compreensão de 6W2H, você com certeza é um mestre solucionador de perda!";
 }
 
 function goHome() {
@@ -283,12 +283,7 @@ function renderQuestion() {
             <p><strong>${question.groupTitle}</strong></p>
           </div>
 
-          <div class="side-widget secondary">
-            <h4>Tipo da pergunta</h4>
-            <p>${question.type}</p>
-          </div>
-
-          <div class="side-widget secondary">
+           <div class="side-widget secondary">
             <h4>Dica</h4>
             <p>Pense em qual alternativa realmente estrutura a ação de forma clara, prática e aplicável.</p>
           </div>
