@@ -1,7 +1,6 @@
 const app = document.getElementById("app");
 const root = document.documentElement;
 const confettiLayer = document.getElementById("confetti-layer");
-let quizData = { modules: [] };
 
 const moduleThemes = {
   phc: {
@@ -92,142 +91,6 @@ function getMotivation(percent) {
   }
 
   return "Excelente desempenho. Você demonstrou forte compreensão de 6W2H, você com certeza é um mestre solucionador de perda!";
-}
-
-function toBool(value) {
-  if (value === true || value === false) return value;
-  if (value === 1 || value === "1") return true;
-  if (value === 0 || value === "0") return false;
-
-  if (typeof value === "string") {
-    const normalized = value.trim().toLowerCase();
-    return normalized === "sim" || normalized === "true" || normalized === "yes";
-  }
-
-  return false;
-}
-
-async function getSharePointListItems(siteUrl, listTitle, selectFields) {
-  const url = `${siteUrl}/_api/web/lists/getbytitle('${listTitle}')/items?$select=${selectFields}&$top=5000`;
-
-  const response = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Accept": "application/json;odata=nometadata"
-    },
-    credentials: "include"
-  });
-
-  if (!response.ok) {
-    throw new Error(`Erro ao carregar lista ${listTitle}: ${response.status}`);
-  }
-
-  return await response.json();
-}
-
-async function loadQuizDataFromSharePoint() {
-  const siteUrl = "https://pgone.sharepoint.com/sites/lepillarlouveira";
-
-  const [
-    modulosResponse,
-    gruposResponse,
-    perguntasResponse,
-    alternativasResponse
-  ] = await Promise.all([
-    getSharePointListItems(siteUrl, "QuizModulos", "Title,ModuleKey,Ativo"),
-    getSharePointListItems(siteUrl, "QuizGrupos", "Title,GroupKey,ModuloKey,Cenario,Ativo"),
-    getSharePointListItems(siteUrl, "QuizPerguntas", "Title,QuestionKey,GroupKey,TipoPergunta,Enunciado,Ativo"),
-    getSharePointListItems(siteUrl, "QuizAlternativas", "Title,QuestionKey,TextoAlternativa,Correta,Ativo")
-  ]);
-
-  const modulos = modulosResponse.value.filter(item => toBool(item.Ativo));
-  const grupos = gruposResponse.value.filter(item => toBool(item.Ativo));
-  const perguntas = perguntasResponse.value.filter(item => toBool(item.Ativo));
-  const alternativas = alternativasResponse.value.filter(item => toBool(item.Ativo));
-
-  quizData = {
-    modules: modulos.map(modulo => {
-      const gruposDoModulo = grupos
-        .filter(grupo => grupo.ModuloKey === modulo.ModuleKey)
-        .map(grupo => {
-          const perguntasDoGrupo = perguntas
-            .filter(pergunta => pergunta.GroupKey === grupo.GroupKey)
-            .map(pergunta => {
-              const alternativasDaPergunta = alternativas
-                .filter(alternativa => alternativa.QuestionKey === pergunta.QuestionKey)
-                .map(alternativa => ({
-                  text: alternativa.TextoAlternativa,
-                  correct: toBool(alternativa.Correta)
-                }));
-
-              return {
-                id: pergunta.QuestionKey,
-                type: pergunta.TipoPergunta,
-                prompt: pergunta.Enunciado,
-                explanation: "",
-                options: alternativasDaPergunta
-              };
-            })
-            .filter(pergunta => pergunta.options.length >= 2);
-
-          return {
-            id: grupo.GroupKey,
-            title: grupo.Title,
-            scenario: grupo.Cenario,
-            questions: perguntasDoGrupo
-          };
-        })
-        .filter(grupo => grupo.questions.length > 0);
-
-      return {
-        id: modulo.ModuleKey,
-        name: modulo.Title,
-        description: "",
-        groups: gruposDoModulo
-      };
-    }).filter(modulo => modulo.groups.length > 0)
-  };
-}
-
-function renderLoading() {
-  renderScreen(`
-    <section class="alert-panel">
-      <h2>Carregando conteúdo</h2>
-      <div class="alert-box">
-        Aguarde enquanto o quiz é carregado do SharePoint.
-      </div>
-    </section>
-  `);
-}
-
-function renderLoadError(error) {
-  renderScreen(`
-    <section class="alert-panel">
-      <h2>Erro ao carregar dados</h2>
-      <div class="alert-box">
-        Não foi possível carregar os dados do SharePoint.<br><br>
-        <strong>Detalhe:</strong> ${error.message}
-      </div>
-
-      <div class="actions">
-        <button type="button" class="btn btn-primary" onclick="initApp()">
-          Tentar novamente
-        </button>
-      </div>
-    </section>
-  `);
-}
-
-async function initApp() {
-  try {
-    renderLoading();
-    await loadQuizDataFromSharePoint();
-    applyTheme("logistica");
-    goHome();
-  } catch (error) {
-    console.error(error);
-    renderLoadError(error);
-  }
 }
 
 function normalizeQuestionType(type) {
@@ -329,7 +192,7 @@ function goHome() {
         </h2>
 
         <p class="hero-text">
-          Escolha a sua área, veja cases reais e descubra a melhor resposta
+          Escolha a sua área, veja cases reais da sua área e descubra a melhor resposta
           para cada etapa do 6W2H. O sistema utiliza grupos aleatórios para cada rodada ser diferente.
         </p>
 
@@ -342,19 +205,19 @@ function goHome() {
 
       <aside class="side-panel">
         <div class="metric-card">
-  Áreas disponíveis
+          Áreas disponíveis
 
-  <div class="home-module-logos">
-    ${(quizData?.modules || []).map(module => {
-      const theme = getTheme(module.id);
-      return `
-        <div class="home-module-logo-item" title="${module.name}">
-          <img src="${theme.logo}" alt="Logo ${module.name}" class="home-module-logo-img">
+          <div class="home-module-logos">
+            ${(quizData?.modules || []).map(module => {
+              const theme = getTheme(module.id);
+              return `
+                <div class="home-module-logo-item" title="${module.name}">
+                  <img src="${theme.logo}" alt="Logo ${module.name}" class="home-module-logo-img">
+                </div>
+              `;
+            }).join("")}
+          </div>
         </div>
-      `;
-    }).join("")}
-  </div>
-</div>
 
         <div class="feature-list">
           <div class="feature-item">
@@ -399,7 +262,7 @@ function renderModules() {
         </div>
 
         <h3>${module.name}</h3>
-        <p>${module.description || "Área do quiz."}</p>
+        <p>${module.description || "Módulo do quiz."}</p>
 
         <div class="module-footer">
           <span>Entrar no desafio</span>
@@ -441,12 +304,12 @@ function startModule(moduleId) {
         <h2>${module.name}</h2>
 
         <div class="alert-box">
-          Essa área ainda não possui <strong>3 grupos cadastrados</strong>, que é o mínimo
+          Este módulo ainda não possui <strong>3 grupos cadastrados</strong>, que é o mínimo
           para o sorteio padrão do quiz. Complete os dados no arquivo <strong>data.js</strong>.
         </div>
 
         <div class="actions">
-          <button type="button" class="btn btn-primary" onclick="renderModules()">Escolher outra área</button>
+          <button type="button" class="btn btn-primary" onclick="renderModules()">Escolher outro módulo</button>
           <button type="button" class="btn btn-light" onclick="goHome()">Voltar ao início</button>
         </div>
       </section>
@@ -490,7 +353,7 @@ function renderQuestion() {
     <section>
       <div class="progress-wrap">
         <div class="progress-top">
-          <span>Área: <strong>${state.selectedModule.name}</strong></span>
+          <span>Módulo: <strong>${state.selectedModule.name}</strong></span>
           <span>Pergunta ${index + 1} de ${total}</span>
         </div>
 
@@ -500,16 +363,20 @@ function renderQuestion() {
       </div>
 
       <div class="quiz-layout">
-       <aside class="quiz-side">
+        <aside class="quiz-side">
+          <div class="side-widget primary">
+            <div class="side-widget-logo-wrap">
+              <img src="${theme.logo}" alt="Logo ${state.selectedModule.name}" class="side-widget-logo">
+            </div>
+            <h4>Grupo sorteado</h4>
+            <p><strong>${question.groupTitle}</strong></p>
+          </div>
 
-  <div class="side-widget primary">
-    <div class="side-widget-logo-wrap">
-      <img src="${theme.logo}" alt="Logo ${state.selectedModule.name}" class="side-widget-logo">
-    </div>
-    <h4>${questionTip.title}</h4>
-    <p>${questionTip.text}</p>
-  </div>
-</aside>
+          <div class="side-widget secondary">
+            <h4>${questionTip.title}</h4>
+            <p>${questionTip.text}</p>
+          </div>
+        </aside>
 
         <div class="quiz-panel">
           <div class="badge-row">
@@ -551,7 +418,7 @@ function renderQuestion() {
             </button>
 
             <button type="button" class="btn btn-light" onclick="renderModules()">
-              Trocar área
+              Trocar módulo
             </button>
           </div>
         </div>
@@ -672,7 +539,7 @@ function renderResult() {
 
         <div class="result-copy">
           <h2>Resultado final</h2>
-          <p><strong>Área:</strong> ${state.selectedModule.name}</p>
+          <p><strong>Módulo:</strong> ${state.selectedModule.name}</p>
           <p>${getMotivation(percent)}</p>
 
           <div class="pill-row">
@@ -704,11 +571,11 @@ function renderResult() {
 
       <div class="actions">
         <button type="button" class="btn btn-primary" onclick="startModule('${state.selectedModule.id}')">
-          Refazer área
+          Refazer módulo
         </button>
 
         <button type="button" class="btn btn-accent" onclick="renderModules()">
-          Escolher outra área
+          Escolher outro módulo
         </button>
 
         <button type="button" class="btn btn-light" onclick="goHome()">
@@ -749,6 +616,6 @@ window.startModule = startModule;
 window.selectOption = selectOption;
 window.submitAnswer = submitAnswer;
 window.nextQuestion = nextQuestion;
-window.initApp = initApp;
 
-initApp();
+applyTheme("logistica");
+goHome();
