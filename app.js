@@ -262,7 +262,7 @@ function renderModules() {
         </div>
 
         <h3>${module.name}</h3>
-        <p>${module.description || "Módulo do quiz."}</p>
+        <p>${module.description || "Área do quiz."}</p>
 
         <div class="module-footer">
           <span>Entrar no desafio</span>
@@ -414,7 +414,7 @@ function renderQuestion() {
             </button>
 
             <button type="button" class="btn btn-light" onclick="renderModules()">
-              Trocar módulo
+              Trocar área
             </button>
           </div>
         </div>
@@ -535,7 +535,7 @@ function renderResult() {
 
         <div class="result-copy">
           <h2>Resultado final</h2>
-          <p><strong>Módulo:</strong> ${state.selectedModule.name}</p>
+          <p><strong>Área:</strong> ${state.selectedModule.name}</p>
           <p>${getMotivation(percent)}</p>
 
           <div class="pill-row">
@@ -567,11 +567,11 @@ function renderResult() {
 
       <div class="actions">
         <button type="button" class="btn btn-primary" onclick="startModule('${state.selectedModule.id}')">
-          Refazer módulo
+          Refazer área
         </button>
 
         <button type="button" class="btn btn-accent" onclick="renderModules()">
-          Escolher outro módulo
+          Escolher outra área
         </button>
 
         <button type="button" class="btn btn-light" onclick="goHome()">
