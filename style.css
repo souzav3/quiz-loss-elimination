@@ -408,8 +408,16 @@ body {
 
 .modules-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
   gap: 18px;
+}
+
+.modules-grid .module-card:nth-child(5) {
+  grid-column: 2;
+}
+
+.modules-grid .module-card:nth-child(6) {
+  grid-column: 3;
 }
 
 .module-card {
