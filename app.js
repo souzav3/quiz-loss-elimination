@@ -192,7 +192,7 @@ function goHome() {
         </h2>
 
         <p class="hero-text">
-          Escolha a sua área, veja cases reais da sua área e descubra a melhor resposta
+          Escolha a sua área, veja cases reais e descubra a melhor resposta
           para cada etapa do 6W2H. O sistema utiliza grupos aleatórios para cada rodada ser diferente.
         </p>
 
