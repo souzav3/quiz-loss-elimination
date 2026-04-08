@@ -205,9 +205,19 @@ function goHome() {
 
       <aside class="side-panel">
         <div class="metric-card">
-          Áreas disponíveis
-          <strong>${quizData?.modules?.length || 0}</strong>
+  Áreas disponíveis
+
+  <div class="home-module-logos">
+    ${(quizData?.modules || []).map(module => {
+      const theme = getTheme(module.id);
+      return `
+        <div class="home-module-logo-item" title="${module.name}">
+          <img src="${theme.logo}" alt="Logo ${module.name}" class="home-module-logo-img">
         </div>
+      `;
+    }).join("")}
+  </div>
+</div>
 
         <div class="feature-list">
           <div class="feature-item">
