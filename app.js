@@ -304,12 +304,12 @@ function startModule(moduleId) {
         <h2>${module.name}</h2>
 
         <div class="alert-box">
-          Este módulo ainda não possui <strong>3 grupos cadastrados</strong>, que é o mínimo
+          Essa área ainda não possui <strong>3 grupos cadastrados</strong>, que é o mínimo
           para o sorteio padrão do quiz. Complete os dados no arquivo <strong>data.js</strong>.
         </div>
 
         <div class="actions">
-          <button type="button" class="btn btn-primary" onclick="renderModules()">Escolher outro módulo</button>
+          <button type="button" class="btn btn-primary" onclick="renderModules()">Escolher outra área</button>
           <button type="button" class="btn btn-light" onclick="goHome()">Voltar ao início</button>
         </div>
       </section>
@@ -353,7 +353,7 @@ function renderQuestion() {
     <section>
       <div class="progress-wrap">
         <div class="progress-top">
-          <span>Módulo: <strong>${state.selectedModule.name}</strong></span>
+          <span>Área: <strong>${state.selectedModule.name}</strong></span>
           <span>Pergunta ${index + 1} de ${total}</span>
         </div>
 
@@ -364,13 +364,15 @@ function renderQuestion() {
 
       <div class="quiz-layout">
        <aside class="quiz-side">
+  /*
   <div class="side-widget primary">
     <div class="side-widget-logo-wrap">
       <img src="${theme.logo}" alt="Logo ${state.selectedModule.name}" class="side-widget-logo">
     </div>
     <h4>Grupo sorteado</h4>
     <p><strong>${question.groupTitle}</strong></p>
-  </div>
+  </div> 
+  */
 
   <div class="side-widget secondary">
     <h4>${questionTip.title}</h4>
