@@ -93,6 +93,96 @@ function getMotivation(percent) {
   return "Excelente desempenho. Você demonstrou forte compreensão de 6W2H, você com certeza é um mestre solucionador de perda!";
 }
 
+function normalizeQuestionType(type) {
+  return (type || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\//g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getQuestionTip(type) {
+  const normalized = normalizeQuestionType(type);
+
+  if (normalized.includes("o que") || normalized.includes("o quê")) {
+    return {
+      title: "O quê",
+      text: "Descreva quais fenômenos estão acontecendo com o componente / produto em relação às partes / componentes da máquina."
+    };
+  }
+
+  if (normalized.includes("como")) {
+    return {
+      title: "Como",
+      text: "Descreva como o fenômeno está acontecendo."
+    };
+  }
+
+  if (normalized.includes("onde")) {
+    return {
+      title: "Onde",
+      text: "Quais os pontos de transformações?"
+    };
+  }
+
+  if (normalized.includes("quando")) {
+    return {
+      title: "Quando",
+      text: "Quando o problema começou? (Start-up, Operação normal, change-over, shutdown)."
+    };
+  }
+
+  if (normalized === "qual" || normalized.includes("qual ")) {
+    return {
+      title: "Qual",
+      text: "Marcas, SKUs, formatos, materiais afetados, transações (quais não são)."
+    };
+  }
+
+  if (
+    normalized.includes("quem e para quem") ||
+    normalized.includes("quem para quem") ||
+    normalized.includes("quem")
+  ) {
+    return {
+      title: "Quem e para quem",
+      text: "Quais linhas, sistemas, operações e departamentos tiveram o problema? Que NÃO viram o problema?"
+    };
+  }
+
+  if (normalized.includes("quanto")) {
+    return {
+      title: "Quanto",
+      text: "Quantas vezes a perda acontece? Extensão do dano por perda? Frequência?"
+    };
+  }
+
+  return {
+    title: "Dica",
+    text: "Analise o cenário e escolha a alternativa que melhor descreve o problema de forma clara e objetiva."
+  };
+}
+
+function getFocusedDefinitionHtml(type) {
+  const normalized = normalizeQuestionType(type);
+
+  if (normalized.includes("o que") || normalized.includes("o quê")) {
+    return `
+      <div class="side-widget secondary">
+        <h4>Definição focada</h4>
+        <p><strong>Estrutura de uma boa definição focada:</strong></p>
+        <p>• <strong>Perda:</strong> Qual o impacto do problema?</p>
+        <p>• <strong>Defeito:</strong> O que não está funcionando como deveria?</p>
+        <p>• <strong>Efeito:</strong> Qual fenômeno o defeito está gerando?</p>
+      </div>
+    `;
+  }
+
+  return "";
+}
+
 function goHome() {
   state.selectedModule = null;
   state.selectedGroups = [];
@@ -250,97 +340,6 @@ function startModule(moduleId) {
   state.answers = [];
   state.selectedOptionIndex = null;
 
-
-  function normalizeQuestionType(type) {
-  return (type || "")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\//g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function getQuestionTip(type) {
-  const normalized = normalizeQuestionType(type);
-
-  if (normalized.includes("o que") || normalized.includes("o quê")) {
-    return {
-      title: "O quê",
-      text: "Descreva quais fenômenos estão acontecendo com o componente / produto em relação às partes / componentes da máquina."
-    };
-  }
-
-  if (normalized.includes("como")) {
-    return {
-      title: "Como",
-      text: "Descreva como o fenômeno está acontecendo."
-    };
-  }
-
-  if (normalized.includes("onde")) {
-    return {
-      title: "Onde",
-      text: "Quais os pontos de transformações?"
-    };
-  }
-
-  if (normalized.includes("quando")) {
-    return {
-      title: "Quando",
-      text: "Quando o problema começou? (Start-up, Operação normal, change-over, shutdown)."
-    };
-  }
-
-  if (normalized === "qual" || normalized.includes("qual ")) {
-    return {
-      title: "Qual",
-      text: "Marcas, SKUs, formatos, materiais afetados, transações (quais não são)."
-    };
-  }
-
-  if (
-    normalized.includes("quem e para quem") ||
-    normalized.includes("quem para quem") ||
-    normalized.includes("quem")
-  ) {
-    return {
-      title: "Quem e para quem",
-      text: "Quais linhas, sistemas, operações e departamentos tiveram o problema? Que NÃO viram o problema?"
-    };
-  }
-
-  if (normalized.includes("quanto")) {
-    return {
-      title: "Quanto",
-      text: "Quantas vezes a perda acontece? Extensão do dano por perda? Frequência?"
-    };
-  }
-
-  return {
-    title: "Dica",
-    text: "Analise o cenário e escolha a alternativa que melhor descreve o problema de forma clara e objetiva."
-  };
-}
-
-function getFocusedDefinitionHtml(type) {
-  const normalized = normalizeQuestionType(type);
-
-  if (normalized.includes("o que") || normalized.includes("o quê")) {
-    return `
-      <div class="side-widget secondary">
-        <h4>Definição focada</h4>
-        <p><strong>Estrutura de uma boa definição focada:</strong></p>
-        <p>• <strong>Perda:</strong> Qual o impacto do problema?</p>
-        <p>• <strong>Defeito:</strong> O que não está funcionando como deveria?</p>
-        <p>• <strong>Efeito:</strong> Qual fenômeno o defeito está gerando?</p>
-      </div>
-    `;
-  }
-
-  return "";
-}
-  
   renderQuestion();
 }
 
@@ -352,7 +351,7 @@ function renderQuestion() {
   const theme = getTheme(state.selectedModule.id);
   const questionTip = getQuestionTip(question.type);
   const focusedDefinitionHtml = getFocusedDefinitionHtml(question.type);
-  
+
   renderScreen(`
     <section>
       <div class="progress-wrap">
@@ -368,21 +367,21 @@ function renderQuestion() {
 
       <div class="quiz-layout">
         <aside class="quiz-side">
-  <div class="side-widget primary">
-    <div class="side-widget-logo-wrap">
-      <img src="${theme.logo}" alt="Logo ${state.selectedModule.name}" class="side-widget-logo">
-    </div>
-    <h4>Grupo sorteado</h4>
-    <p><strong>${question.groupTitle}</strong></p>
-  </div>
+          <div class="side-widget primary">
+            <div class="side-widget-logo-wrap">
+              <img src="${theme.logo}" alt="Logo ${state.selectedModule.name}" class="side-widget-logo">
+            </div>
+            <h4>Grupo sorteado</h4>
+            <p><strong>${question.groupTitle}</strong></p>
+          </div>
 
-  <div class="side-widget secondary">
-    <h4>${questionTip.title}</h4>
-    <p>${questionTip.text}</p>
-  </div>
+          <div class="side-widget secondary">
+            <h4>${questionTip.title}</h4>
+            <p>${questionTip.text}</p>
+          </div>
 
-  ${focusedDefinitionHtml}
-</aside>
+          ${focusedDefinitionHtml}
+        </aside>
 
         <div class="quiz-panel">
           <div class="badge-row">
