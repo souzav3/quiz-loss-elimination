@@ -1,6 +1,7 @@
 const app = document.getElementById("app");
 const root = document.documentElement;
 const confettiLayer = document.getElementById("confetti-layer");
+let quizData = { modules: [] };
 
 const moduleThemes = {
   phc: {
@@ -91,6 +92,142 @@ function getMotivation(percent) {
   }
 
   return "Excelente desempenho. Você demonstrou forte compreensão de 6W2H, você com certeza é um mestre solucionador de perda!";
+}
+
+function toBool(value) {
+  if (value === true || value === false) return value;
+  if (value === 1 || value === "1") return true;
+  if (value === 0 || value === "0") return false;
+
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    return normalized === "sim" || normalized === "true" || normalized === "yes";
+  }
+
+  return false;
+}
+
+async function getSharePointListItems(siteUrl, listTitle, selectFields) {
+  const url = `${siteUrl}/_api/web/lists/getbytitle('${listTitle}')/items?$select=${selectFields}&$top=5000`;
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Accept": "application/json;odata=nometadata"
+    },
+    credentials: "include"
+  });
+
+  if (!response.ok) {
+    throw new Error(`Erro ao carregar lista ${listTitle}: ${response.status}`);
+  }
+
+  return await response.json();
+}
+
+async function loadQuizDataFromSharePoint() {
+  const siteUrl = "https://pgone.sharepoint.com/sites/lepillarlouveira";
+
+  const [
+    modulosResponse,
+    gruposResponse,
+    perguntasResponse,
+    alternativasResponse
+  ] = await Promise.all([
+    getSharePointListItems(siteUrl, "QuizModulos", "Title,ModuleKey,Ativo"),
+    getSharePointListItems(siteUrl, "QuizGrupos", "Title,GroupKey,ModuloKey,Cenario,Ativo"),
+    getSharePointListItems(siteUrl, "QuizPerguntas", "Title,QuestionKey,GroupKey,TipoPergunta,Enunciado,Ativo"),
+    getSharePointListItems(siteUrl, "QuizAlternativas", "Title,QuestionKey,TextoAlternativa,Correta,Ativo")
+  ]);
+
+  const modulos = modulosResponse.value.filter(item => toBool(item.Ativo));
+  const grupos = gruposResponse.value.filter(item => toBool(item.Ativo));
+  const perguntas = perguntasResponse.value.filter(item => toBool(item.Ativo));
+  const alternativas = alternativasResponse.value.filter(item => toBool(item.Ativo));
+
+  quizData = {
+    modules: modulos.map(modulo => {
+      const gruposDoModulo = grupos
+        .filter(grupo => grupo.ModuloKey === modulo.ModuleKey)
+        .map(grupo => {
+          const perguntasDoGrupo = perguntas
+            .filter(pergunta => pergunta.GroupKey === grupo.GroupKey)
+            .map(pergunta => {
+              const alternativasDaPergunta = alternativas
+                .filter(alternativa => alternativa.QuestionKey === pergunta.QuestionKey)
+                .map(alternativa => ({
+                  text: alternativa.TextoAlternativa,
+                  correct: toBool(alternativa.Correta)
+                }));
+
+              return {
+                id: pergunta.QuestionKey,
+                type: pergunta.TipoPergunta,
+                prompt: pergunta.Enunciado,
+                explanation: "",
+                options: alternativasDaPergunta
+              };
+            })
+            .filter(pergunta => pergunta.options.length >= 2);
+
+          return {
+            id: grupo.GroupKey,
+            title: grupo.Title,
+            scenario: grupo.Cenario,
+            questions: perguntasDoGrupo
+          };
+        })
+        .filter(grupo => grupo.questions.length > 0);
+
+      return {
+        id: modulo.ModuleKey,
+        name: modulo.Title,
+        description: "",
+        groups: gruposDoModulo
+      };
+    }).filter(modulo => modulo.groups.length > 0)
+  };
+}
+
+function renderLoading() {
+  renderScreen(`
+    <section class="alert-panel">
+      <h2>Carregando conteúdo</h2>
+      <div class="alert-box">
+        Aguarde enquanto o quiz é carregado do SharePoint.
+      </div>
+    </section>
+  `);
+}
+
+function renderLoadError(error) {
+  renderScreen(`
+    <section class="alert-panel">
+      <h2>Erro ao carregar dados</h2>
+      <div class="alert-box">
+        Não foi possível carregar os dados do SharePoint.<br><br>
+        <strong>Detalhe:</strong> ${error.message}
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-primary" onclick="initApp()">
+          Tentar novamente
+        </button>
+      </div>
+    </section>
+  `);
+}
+
+async function initApp() {
+  try {
+    renderLoading();
+    await loadQuizDataFromSharePoint();
+    applyTheme("logistica");
+    goHome();
+  } catch (error) {
+    console.error(error);
+    renderLoadError(error);
+  }
 }
 
 function normalizeQuestionType(type) {
@@ -612,6 +749,6 @@ window.startModule = startModule;
 window.selectOption = selectOption;
 window.submitAnswer = submitAnswer;
 window.nextQuestion = nextQuestion;
+window.initApp = initApp;
 
-applyTheme("logistica");
-goHome();
+initApp();
