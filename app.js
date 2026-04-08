@@ -106,6 +106,13 @@ function normalizeQuestionType(type) {
 function getQuestionTip(type) {
   const normalized = normalizeQuestionType(type);
 
+  if (normalized.includes("definicao focada")) {
+    return {
+      title: "Definição focada",
+      text: "Estrutura de uma boa definição focada: • Perda: Qual o impacto do problema? • Defeito: O que não está funcionando como deveria? • Efeito: Qual fenômeno o defeito está gerando?"
+    };
+  }
+
   if (normalized.includes("o que") || normalized.includes("o quê")) {
     return {
       title: "O quê",
@@ -143,8 +150,7 @@ function getQuestionTip(type) {
 
   if (
     normalized.includes("quem e para quem") ||
-    normalized.includes("quem para quem") ||
-    normalized.includes("quem")
+    normalized.includes("quem para quem")
   ) {
     return {
       title: "Quem e para quem",
@@ -163,24 +169,6 @@ function getQuestionTip(type) {
     title: "Dica",
     text: "Analise o cenário e escolha a alternativa que melhor descreve o problema de forma clara e objetiva."
   };
-}
-
-function getFocusedDefinitionHtml(type) {
-  const normalized = normalizeQuestionType(type);
-
-  if (normalized.includes("o que") || normalized.includes("o quê")) {
-    return `
-      <div class="side-widget secondary">
-        <h4>Definição focada</h4>
-        <p><strong>Estrutura de uma boa definição focada:</strong></p>
-        <p>• <strong>Perda:</strong> Qual o impacto do problema?</p>
-        <p>• <strong>Defeito:</strong> O que não está funcionando como deveria?</p>
-        <p>• <strong>Efeito:</strong> Qual fenômeno o defeito está gerando?</p>
-      </div>
-    `;
-  }
-
-  return "";
 }
 
 function goHome() {
@@ -350,7 +338,6 @@ function renderQuestion() {
   const progress = Math.round(((index + 1) / total) * 100);
   const theme = getTheme(state.selectedModule.id);
   const questionTip = getQuestionTip(question.type);
-  const focusedDefinitionHtml = getFocusedDefinitionHtml(question.type);
 
   renderScreen(`
     <section>
@@ -366,22 +353,20 @@ function renderQuestion() {
       </div>
 
       <div class="quiz-layout">
-        <aside class="quiz-side">
-          <div class="side-widget primary">
-            <div class="side-widget-logo-wrap">
-              <img src="${theme.logo}" alt="Logo ${state.selectedModule.name}" class="side-widget-logo">
-            </div>
-            <h4>Grupo sorteado</h4>
-            <p><strong>${question.groupTitle}</strong></p>
-          </div>
+       <aside class="quiz-side">
+  <div class="side-widget primary">
+    <div class="side-widget-logo-wrap">
+      <img src="${theme.logo}" alt="Logo ${state.selectedModule.name}" class="side-widget-logo">
+    </div>
+    <h4>Grupo sorteado</h4>
+    <p><strong>${question.groupTitle}</strong></p>
+  </div>
 
-          <div class="side-widget secondary">
-            <h4>${questionTip.title}</h4>
-            <p>${questionTip.text}</p>
-          </div>
-
-          ${focusedDefinitionHtml}
-        </aside>
+  <div class="side-widget secondary">
+    <h4>${questionTip.title}</h4>
+    <p>${questionTip.text}</p>
+  </div>
+</aside>
 
         <div class="quiz-panel">
           <div class="badge-row">
