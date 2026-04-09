@@ -110,7 +110,7 @@ body {
 
 .tip-image {
   width: 100%;
-  max-width: 180px;
+  max-width: 260px;
   height: auto;
   object-fit: contain;
   display: block;
