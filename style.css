@@ -101,6 +101,21 @@ body {
   }
 }
 
+.tip-image-wrap {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tip-image {
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
 .app-shell {
   max-width: 1180px;
   margin: 0 auto;
