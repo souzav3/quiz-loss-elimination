@@ -364,13 +364,17 @@ function renderQuestion() {
 
       <div class="quiz-layout">
         <aside class="quiz-side">
-          <div class="side-widget primary">
-            <div class="side-widget-logo-wrap">
-              <img src="${theme.logo}" alt="Logo ${state.selectedModule.name}" class="side-widget-logo">
-            </div>
-            <h4>${questionTip.title}</h4>
-            <p>${questionTip.text}</p>
-          </div>
+          <div class="side-widget secondary">
+  <div class="side-widget-logo-wrap">
+    <img src="${theme.logo}" alt="Logo ${state.selectedModule.name}" class="side-widget-logo">
+  </div>
+  <h4>${questionTip.title}</h4>
+  <p>${questionTip.text}</p>
+
+  <div class="tip-image-wrap">
+    <img src="assets/logos/funil.png" alt="Funil de eliminação de perdas" class="tip-image">
+  </div>
+</div>
         </aside>
 
         <div class="quiz-panel">
