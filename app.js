@@ -49,7 +49,8 @@ const state = {
   selectedQuestions: [],
   currentQuestionIndex: 0,
   answers: [],
-  selectedOptionIndex: null
+  selectedOptionIndex: null,
+  quizMode: 3
 };
 
 function shuffleArray(arr) {
@@ -74,6 +75,11 @@ function applyTheme(moduleId) {
   root.style.setProperty("--theme-1", theme.color1);
   root.style.setProperty("--theme-2", theme.color2);
   root.style.setProperty("--theme-3", theme.color3);
+}
+
+function setQuizMode(mode) {
+  state.quizMode = mode;
+  renderModules();
 }
 
 function renderScreen(html) {
@@ -262,7 +268,7 @@ function renderModules() {
         </div>
 
         <h3>${module.name}</h3>
-        <p>${module.description || "Área do quiz."}</p>
+        <p>${module.description || "Módulo do quiz."}</p>
 
         <div class="module-footer">
           <span>Entrar no desafio</span>
@@ -277,8 +283,26 @@ function renderModules() {
       <div class="section-header">
         <div>
           <h2>Escolha sua área</h2>
-          <p>Selecione a área para iniciar o quiz.</p>
+          <p>Selecione a área e defina o modo do quiz.</p>
         </div>
+      </div>
+
+      <div class="mode-selector">
+        <button
+          type="button"
+          class="btn ${state.quizMode === 3 ? "btn-primary" : "btn-light"}"
+          onclick="setQuizMode(3)"
+        >
+          Modo rápido • 3 perguntas
+        </button>
+
+        <button
+          type="button"
+          class="btn ${state.quizMode === 9 ? "btn-primary" : "btn-light"}"
+          onclick="setQuizMode(9)"
+        >
+          Modo completo • 9 perguntas
+        </button>
       </div>
 
       <div class="modules-grid">
@@ -298,9 +322,11 @@ function startModule(moduleId) {
 
   applyTheme(module.id);
 
-  // agora o módulo precisa ter pelo menos 1 grupo com 3 perguntas ou mais
+  const requiredQuestions = state.quizMode === 9 ? 9 : 3;
+
+  // filtra apenas grupos com perguntas suficientes para o modo escolhido
   const eligibleGroups = (module.groups || []).filter(group =>
-    Array.isArray(group.questions) && group.questions.length >= 3
+    Array.isArray(group.questions) && group.questions.length >= requiredQuestions
   );
 
   if (eligibleGroups.length < 1) {
@@ -309,9 +335,8 @@ function startModule(moduleId) {
         <h2>${module.name}</h2>
 
         <div class="alert-box">
-          Este módulo ainda não possui <strong>1 grupo com pelo menos 3 perguntas cadastradas</strong>,
-          que é o mínimo para o sorteio do quiz em cenário único.
-          Complete os dados no arquivo <strong>data.js</strong>.
+          Este módulo ainda não possui <strong>1 grupo com pelo menos ${requiredQuestions} perguntas cadastradas</strong>,
+          que é o mínimo para o modo selecionado.
         </div>
 
         <div class="actions">
@@ -325,28 +350,43 @@ function startModule(moduleId) {
 
   state.selectedModule = module;
 
-  // sorteia apenas 1 grupo/cenário
+  // sorteia apenas 1 cenário
   const selectedGroup = pickRandomItems(eligibleGroups, 1)[0];
   state.selectedGroups = [selectedGroup];
 
-  // sorteia 3 perguntas desse mesmo grupo
-  state.selectedQuestions = pickRandomItems(selectedGroup.questions, 3).map(question => ({
-    groupId: selectedGroup.id,
-    groupTitle: selectedGroup.title,
-    scenario: selectedGroup.scenario,
-    type: question.type,
-    prompt: question.prompt,
-    explanation: question.explanation || "",
-    options: shuffleArray(question.options)
-  }));
+  let selectedQuestions;
 
+  if (state.quizMode === 9) {
+    // pega todas as perguntas do cenário
+    selectedQuestions = selectedGroup.questions.map(question => ({
+      groupId: selectedGroup.id,
+      groupTitle: selectedGroup.title,
+      scenario: selectedGroup.scenario,
+      type: question.type,
+      prompt: question.prompt,
+      explanation: question.explanation || "",
+      options: shuffleArray(question.options)
+    }));
+  } else {
+    // sorteia apenas 3 perguntas do cenário
+    selectedQuestions = pickRandomItems(selectedGroup.questions, 3).map(question => ({
+      groupId: selectedGroup.id,
+      groupTitle: selectedGroup.title,
+      scenario: selectedGroup.scenario,
+      type: question.type,
+      prompt: question.prompt,
+      explanation: question.explanation || "",
+      options: shuffleArray(question.options)
+    }));
+  }
+
+  state.selectedQuestions = selectedQuestions;
   state.currentQuestionIndex = 0;
   state.answers = [];
   state.selectedOptionIndex = null;
 
   renderQuestion();
 }
-
 function renderQuestion() {
   const total = state.selectedQuestions.length;
   const index = state.currentQuestionIndex;
@@ -621,6 +661,7 @@ window.startModule = startModule;
 window.selectOption = selectOption;
 window.submitAnswer = submitAnswer;
 window.nextQuestion = nextQuestion;
+window.setQuizMode = setQuizMode;
 
 applyTheme("logistica");
 goHome();
