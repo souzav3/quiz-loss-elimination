@@ -599,7 +599,7 @@ body {
   position: relative;
   border-color: rgba(255,255,255,0.30);
   animation:
-    challengeShake 0.28s infinite alternate,
+    challengeShake 0.20s infinite alternate,
     challengeGlow 2s infinite ease-in-out;
 }
 
