@@ -277,7 +277,7 @@ function renderModules() {
         ` : ""}
 
         <div class="module-footer">
-          <span>${isChallengeMode ? "Entrar em modo extremo" : "Entrar no desafio"}</span>
+          <span>${isChallengeMode ? "Fazer 6W2H completo" : "Entrar no desafio"}</span>
           <span class="module-arrow">→</span>
         </div>
       </button>
