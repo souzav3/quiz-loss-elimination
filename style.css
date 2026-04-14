@@ -383,6 +383,13 @@ body {
   display: block;
 }
 
+.mode-selector {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
 .feature-list {
   display: grid;
   gap: 12px;
