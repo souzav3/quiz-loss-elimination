@@ -193,7 +193,7 @@ function goHome() {
 
         <p class="hero-text">
           Escolha a sua área, veja cases reais da sua área e descubra a melhor resposta
-          para cada etapa do 6W2H. O sistema utiliza grupos aleatórios para cada rodada ser diferente.
+          para cada etapa do 6W2H. O sistema utiliza grupos aleatórios para cada rodada ser um cenário diferente.
         </p>
 
         <div class="hero-actions">
@@ -298,18 +298,24 @@ function startModule(moduleId) {
 
   applyTheme(module.id);
 
-  if (!module.groups || module.groups.length < 3) {
+  // agora o módulo precisa ter pelo menos 1 grupo com 3 perguntas ou mais
+  const eligibleGroups = (module.groups || []).filter(group =>
+    Array.isArray(group.questions) && group.questions.length >= 3
+  );
+
+  if (eligibleGroups.length < 1) {
     renderScreen(`
       <section class="alert-panel">
         <h2>${module.name}</h2>
 
         <div class="alert-box">
-          Esta área ainda não possui <strong>3 grupos cadastrados</strong>, que é o mínimo
-          para o sorteio padrão do quiz. Complete os dados no arquivo <strong>data.js</strong>.
+          Este módulo ainda não possui <strong>1 grupo com pelo menos 3 perguntas cadastradas</strong>,
+          que é o mínimo para o sorteio do quiz em cenário único.
+          Complete os dados no arquivo <strong>data.js</strong>.
         </div>
 
         <div class="actions">
-          <button type="button" class="btn btn-primary" onclick="renderModules()">Escolher outra área</button>
+          <button type="button" class="btn btn-primary" onclick="renderModules()">Escolher outro módulo</button>
           <button type="button" class="btn btn-light" onclick="goHome()">Voltar ao início</button>
         </div>
       </section>
@@ -318,21 +324,21 @@ function startModule(moduleId) {
   }
 
   state.selectedModule = module;
-  state.selectedGroups = pickRandomItems(module.groups, 3);
 
-  state.selectedQuestions = state.selectedGroups.map(group => {
-    const randomQuestion = pickRandomItems(group.questions, 1)[0];
+  // sorteia apenas 1 grupo/cenário
+  const selectedGroup = pickRandomItems(eligibleGroups, 1)[0];
+  state.selectedGroups = [selectedGroup];
 
-    return {
-      groupId: group.id,
-      groupTitle: group.title,
-      scenario: group.scenario,
-      type: randomQuestion.type,
-      prompt: randomQuestion.prompt,
-      explanation: randomQuestion.explanation || "",
-      options: shuffleArray(randomQuestion.options)
-    };
-  });
+  // sorteia 3 perguntas desse mesmo grupo
+  state.selectedQuestions = pickRandomItems(selectedGroup.questions, 3).map(question => ({
+    groupId: selectedGroup.id,
+    groupTitle: selectedGroup.title,
+    scenario: selectedGroup.scenario,
+    type: question.type,
+    prompt: question.prompt,
+    explanation: question.explanation || "",
+    options: shuffleArray(question.options)
+  }));
 
   state.currentQuestionIndex = 0;
   state.answers = [];
