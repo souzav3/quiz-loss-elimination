@@ -249,6 +249,8 @@ function goHome() {
 function renderModules() {
   applyTheme("logistica");
 
+  const isChallengeMode = state.quizMode === 9;
+
   const cards = (quizData.modules || []).map(module => {
     const theme = getTheme(module.id);
     const totalGroups = module.groups?.length || 0;
@@ -256,10 +258,12 @@ function renderModules() {
     return `
       <button
         type="button"
-        class="module-card"
+        class="module-card ${isChallengeMode ? "module-card-challenge" : ""}"
         style="background: linear-gradient(135deg, ${theme.color1}, ${theme.color2});"
         onclick="startModule('${module.id}')"
       >
+        ${isChallengeMode ? `<div class="challenge-badge">DESAFIO</div>` : ""}
+
         <div class="module-card-top">
           <div class="module-icon">
             <img src="${theme.logo}" alt="Logo ${module.name}" class="module-logo">
@@ -271,7 +275,7 @@ function renderModules() {
         <p>${module.description || "Módulo do quiz."}</p>
 
         <div class="module-footer">
-          <span>Entrar no desafio</span>
+          <span>${isChallengeMode ? "Aceitar desafio" : "Entrar no desafio"}</span>
           <span>→</span>
         </div>
       </button>
@@ -279,15 +283,21 @@ function renderModules() {
   }).join("");
 
   renderScreen(`
-    <section>
+    <section class="${isChallengeMode ? "challenge-screen" : ""}">
       <div class="section-header">
         <div>
-          <h2>Escolha sua área</h2>
-          <p>Selecione a área e defina o modo do quiz.</p>
+          <h2>${isChallengeMode ? "Modo completo ativado" : "Escolha sua área"}</h2>
+          <p>
+            ${
+              isChallengeMode
+                ? "Você escolheu o modo mais desafiador. Agora selecione a área e enfrente o cenário completo com todas as perguntas."
+                : "Selecione a área e defina o modo do quiz."
+            }
+          </p>
         </div>
       </div>
 
-      <div class="mode-selector">
+      <div class="mode-selector ${isChallengeMode ? "mode-selector-challenge" : ""}">
         <button
           type="button"
           class="btn ${state.quizMode === 3 ? "btn-primary" : "btn-light"}"
@@ -298,14 +308,21 @@ function renderModules() {
 
         <button
           type="button"
-          class="btn ${state.quizMode === 9 ? "btn-primary" : "btn-light"}"
+          class="btn ${state.quizMode === 9 ? "btn-danger mode-complete-active" : "btn-light"}"
           onclick="setQuizMode(9)"
         >
           Modo completo • 9 perguntas
         </button>
       </div>
 
-      <div class="modules-grid">
+      ${isChallengeMode ? `
+        <div class="challenge-banner">
+          <strong>🔥 Modo completo</strong>
+          <span>Um cenário. Todas as perguntas. Máximo desafio.</span>
+        </div>
+      ` : ""}
+
+      <div class="modules-grid ${isChallengeMode ? "modules-grid-challenge" : ""}">
         ${cards}
       </div>
 
@@ -315,7 +332,6 @@ function renderModules() {
     </section>
   `);
 }
-
 function startModule(moduleId) {
   const module = (quizData.modules || []).find(m => m.id === moduleId);
   if (!module) return;
