@@ -256,32 +256,32 @@ function renderModules() {
     const totalGroups = module.groups?.length || 0;
 
     return `
-  <button
-    type="button"
-    class="module-card ${isChallengeMode ? "module-card-challenge" : ""}"
-    style="background: linear-gradient(135deg, ${theme.color1}, ${theme.color2});"
-    onclick="startModule('${module.id}')"
-  >
-    <div class="module-card-top">
-      <div class="module-icon">
-        <img src="${theme.logo}" alt="Logo ${module.name}" class="module-logo">
-      </div>
-      <span class="module-tag">${totalGroups} grupo${totalGroups !== 1 ? "s" : ""}</span>
-    </div>
+      <button
+        type="button"
+        class="module-card ${isChallengeMode ? "module-card-challenge" : ""}"
+        style="background: linear-gradient(135deg, ${theme.color1}, ${theme.color2});"
+        onclick="startModule('${module.id}')"
+      >
+        <div class="module-card-top">
+          <div class="module-icon">
+            <img src="${theme.logo}" alt="Logo ${module.name}" class="module-logo">
+          </div>
+          <span class="module-tag">${totalGroups} grupo${totalGroups !== 1 ? "s" : ""}</span>
+        </div>
 
-    <h3>${module.name}</h3>
-    <p>${module.description || "Módulo do quiz."}</p>
+        <h3>${module.name}</h3>
+        <p>${module.description || "Módulo do quiz."}</p>
 
-    ${isChallengeMode ? `
-      <div class="challenge-badge-inline">DESAFIO</div>
-    ` : ""}
+        ${isChallengeMode ? `
+          <div class="challenge-badge-inline">DESAFIO</div>
+        ` : ""}
 
-    <div class="module-footer">
-      <span>${isChallengeMode ? "Entrar em modo extremo" : "Entrar no desafio"}</span>
-      <span>→</span>
-    </div>
-  </button>
-`;
+        <div class="module-footer">
+          <span>${isChallengeMode ? "Entrar em modo extremo" : "Entrar no desafio"}</span>
+          <span>→</span>
+        </div>
+      </button>
+    `;
   }).join("");
 
   renderScreen(`
@@ -292,7 +292,7 @@ function renderModules() {
           <p>
             ${
               isChallengeMode
-                ? "Você escolheu o modo mais desafiador. Agora selecione a área e enfrente o cenário completo com todas as perguntas."
+                ? "Você escolheu o 6W2H completo. Agora selecione a área e enfrente o cenário com todas as perguntas."
                 : "Selecione a área e defina o modo do quiz."
             }
           </p>
@@ -313,16 +313,9 @@ function renderModules() {
           class="btn ${state.quizMode === 9 ? "btn-danger mode-complete-active" : "btn-light"}"
           onclick="setQuizMode(9)"
         >
-          Modo completo • 9 perguntas
+          Modo completo • 6W2H completo
         </button>
       </div>
-
-      ${isChallengeMode ? `
-        <div class="challenge-banner">
-          <strong>🔥 Modo completo</strong>
-          <span>Um cenário. Todas as perguntas. Máximo desafio.</span>
-        </div>
-      ` : ""}
 
       <div class="modules-grid ${isChallengeMode ? "modules-grid-challenge" : ""}">
         ${cards}
@@ -334,6 +327,7 @@ function renderModules() {
     </section>
   `);
 }
+
 function startModule(moduleId) {
   const module = (quizData.modules || []).find(m => m.id === moduleId);
   if (!module) return;
