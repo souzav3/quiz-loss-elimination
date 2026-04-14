@@ -475,6 +475,37 @@ body {
     0 0 26px rgba(255, 120, 0, 0.35);
 }
 
+@keyframes challengeShake {
+  0% { transform: translateX(-0.8px) rotate(-0.25deg); }
+  100% { transform: translateX(0.8px) rotate(0.25deg); }
+}
+
+@keyframes challengeGlow {
+  0%, 100% {
+    box-shadow:
+      0 20px 42px rgba(0,0,0,0.22),
+      0 0 0 rgba(255, 110, 0, 0);
+    filter: saturate(1);
+  }
+  50% {
+    box-shadow:
+      0 22px 48px rgba(0,0,0,0.26),
+      0 0 24px rgba(255, 120, 0, 0.38);
+    filter: saturate(1.12);
+  }
+}
+
+@keyframes challengePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 106, 0, 0.38);
+  }
+  70% {
+    box-shadow: 0 0 0 18px rgba(255, 106, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 106, 0, 0);
+  }
+}
 
 @keyframes badgeFlicker {
   0%, 100% {
