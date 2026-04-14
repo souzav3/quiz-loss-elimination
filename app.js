@@ -260,7 +260,7 @@ function renderModules() {
         type="button"
         class="module-card ${isChallengeMode ? "module-card-challenge" : ""}"
         style="background: linear-gradient(135deg, ${theme.color1}, ${theme.color2});"
-        onclick="startModule('${module.id}')"
+        onclick="activateModuleCard(event, '${module.id}')"
       >
         <div class="module-card-top">
           <div class="module-icon">
@@ -278,7 +278,7 @@ function renderModules() {
 
         <div class="module-footer">
           <span>${isChallengeMode ? "Entrar em modo extremo" : "Entrar no desafio"}</span>
-          <span>→</span>
+          <span class="module-arrow">→</span>
         </div>
       </button>
     `;
@@ -326,6 +326,25 @@ function renderModules() {
       </div>
     </section>
   `);
+}
+
+function activateModuleCard(event, moduleId) {
+  const card = event.currentTarget;
+  const isChallengeMode = state.quizMode === 9;
+
+  if (!card) {
+    startModule(moduleId);
+    return;
+  }
+
+  if (isChallengeMode) {
+    card.classList.add("module-card-activated");
+    setTimeout(() => {
+      startModule(moduleId);
+    }, 380);
+  } else {
+    startModule(moduleId);
+  }
 }
 
 function startModule(moduleId) {
@@ -674,6 +693,7 @@ window.selectOption = selectOption;
 window.submitAnswer = submitAnswer;
 window.nextQuestion = nextQuestion;
 window.setQuizMode = setQuizMode;
+window.activateModuleCard = activateModuleCard;
 
 applyTheme("logistica");
 goHome();
