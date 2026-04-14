@@ -154,7 +154,7 @@ const quizData = {
     {
       id: "qualidade",
       name: "Qualidade",
-      description: "Exemplos específicos do módulo Qualidade.",
+      description: "Exemplos específicos de Qualidade.",
       groups: []
     }
   ]
