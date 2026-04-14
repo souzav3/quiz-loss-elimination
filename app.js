@@ -275,7 +275,7 @@ function renderModules() {
         <p>${module.description || "Módulo do quiz."}</p>
 
         <div class="module-footer">
-          <span>${isChallengeMode ? "Aceitar desafio" : "Entrar no desafio"}</span>
+          <span>${isChallengeMode ? "Entrar em modo extremo" : "Entrar no desafio"}</span>
           <span>→</span>
         </div>
       </button>
