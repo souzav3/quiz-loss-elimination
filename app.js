@@ -256,30 +256,32 @@ function renderModules() {
     const totalGroups = module.groups?.length || 0;
 
     return `
-      <button
-        type="button"
-        class="module-card ${isChallengeMode ? "module-card-challenge" : ""}"
-        style="background: linear-gradient(135deg, ${theme.color1}, ${theme.color2});"
-        onclick="startModule('${module.id}')"
-      >
-        ${isChallengeMode ? `<div class="challenge-badge">DESAFIO</div>` : ""}
+  <button
+    type="button"
+    class="module-card ${isChallengeMode ? "module-card-challenge" : ""}"
+    style="background: linear-gradient(135deg, ${theme.color1}, ${theme.color2});"
+    onclick="startModule('${module.id}')"
+  >
+    <div class="module-card-top">
+      <div class="module-icon">
+        <img src="${theme.logo}" alt="Logo ${module.name}" class="module-logo">
+      </div>
+      <span class="module-tag">${totalGroups} grupo${totalGroups !== 1 ? "s" : ""}</span>
+    </div>
 
-        <div class="module-card-top">
-          <div class="module-icon">
-            <img src="${theme.logo}" alt="Logo ${module.name}" class="module-logo">
-          </div>
-          <span class="module-tag">${totalGroups} grupo${totalGroups !== 1 ? "s" : ""}</span>
-        </div>
+    <h3>${module.name}</h3>
+    <p>${module.description || "Módulo do quiz."}</p>
 
-        <h3>${module.name}</h3>
-        <p>${module.description || "Módulo do quiz."}</p>
+    ${isChallengeMode ? `
+      <div class="challenge-badge-inline">DESAFIO</div>
+    ` : ""}
 
-        <div class="module-footer">
-          <span>${isChallengeMode ? "Entrar em modo extremo" : "Entrar no desafio"}</span>
-          <span>→</span>
-        </div>
-      </button>
-    `;
+    <div class="module-footer">
+      <span>${isChallengeMode ? "Entrar em modo extremo" : "Entrar no desafio"}</span>
+      <span>→</span>
+    </div>
+  </button>
+`;
   }).join("");
 
   renderScreen(`
