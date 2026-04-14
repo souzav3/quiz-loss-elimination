@@ -173,7 +173,7 @@ body {
 }
 
 .plant-logo {
-  height: 56px;
+  height: 90px;
   width: auto;
   display: block;
   object-fit: contain;
@@ -825,7 +825,7 @@ body {
 
 .tip-image {
   width: 100%;
-  max-width: 180px;
+  max-width: 450px;
   height: auto;
   object-fit: contain;
   display: block;
