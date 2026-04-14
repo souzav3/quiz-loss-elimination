@@ -313,7 +313,7 @@ function renderModules() {
           class="btn ${state.quizMode === 9 ? "btn-danger mode-complete-active" : "btn-light"}"
           onclick="setQuizMode(9)"
         >
-          Modo completo • 6W2H completo
+          Modo 6W2H completo
         </button>
       </div>
 
