@@ -173,7 +173,7 @@ body {
 }
 
 .plant-logo {
-  height: 140px;
+  height: 135px;
   width: auto;
   display: block;
   object-fit: contain;
@@ -1192,10 +1192,6 @@ body {
     width: 54px;
     height: 54px;
     border-radius: 16px;
-  }
-
-  .plant-logo {
-    height: 44px;
   }
 
   .modules-grid {
