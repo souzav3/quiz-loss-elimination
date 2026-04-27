@@ -353,7 +353,7 @@ function startModule(moduleId) {
 
   applyTheme(module.id);
 
-  const requiredQuestions = state.quizMode === 9 ? 9 : 3;
+  const requiredQuestions = state.quizMode === 9 ? 8 : 3;
 
   // filtra apenas grupos com perguntas suficientes para o modo escolhido
   const eligibleGroups = (module.groups || []).filter(group =>
@@ -389,7 +389,7 @@ function startModule(moduleId) {
 
   if (state.quizMode === 9) {
     // pega todas as perguntas do cenário
-    selectedQuestions = selectedGroup.questions.map(question => ({
+   selectedQuestions = selectedGroup.questions.slice(0, 8).map(question => ({
       groupId: selectedGroup.id,
       groupTitle: selectedGroup.title,
       scenario: selectedGroup.scenario,
