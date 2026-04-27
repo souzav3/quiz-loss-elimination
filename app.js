@@ -442,12 +442,15 @@ function renderQuestion() {
       <div class="quiz-layout">
         <aside class="quiz-side">
           <div class="side-widget secondary">
-  <div class="side-widget-logo-wrap">
-    <img src="${theme.logo}" alt="Logo ${state.selectedModule.name}" class="side-widget-logo">
-  </div>
-  <h4>${questionTip.title}</h4>
-  <p>${questionTip.text}</p>
+          <div class="side-widget-logo-wrap">
+        <img src="${theme.logo}" alt="Logo ${state.selectedModule.name}" class="side-widget-logo">
+<div class="side-widget secondary side-widget-tip">
+  <div class="tip-topline"></div>
+  <h4 class="tip-title">${questionTip.title}</h4>
 
+  <div class="tip-content-box">
+    <p class="tip-copy">${questionTip.text}</p>
+  </div>
 </div>
         </aside>
 
