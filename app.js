@@ -448,9 +448,6 @@ function renderQuestion() {
   <h4>${questionTip.title}</h4>
   <p>${questionTip.text}</p>
 
-  <div class="tip-image-wrap">
-    <img src="assets/logos/funil.png" alt="Funil de eliminação de perdas" class="tip-image">
-  </div>
 </div>
         </aside>
 
