@@ -78,7 +78,7 @@ const quizData = {
           options: [
             { text: "Ocorre com todos os counts, exceto 32 x 8, com maior incidência no formato 8 x 18.", correct: true },
             { text: "Ocorre apenas no formato 32 x 8 e nunca foi observado no 8 x 18.", correct: false },
-            { text: "O problema está restrito a um único SKU piloto e não afeta nenhum outro count da linha.", correct: false },
+            { text: "Fem Care.", correct: false },
             { text: "A falha ocorre somente em materiais de embalagem importados e não depende de formato.", correct: false }
           ]
         },
