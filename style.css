@@ -296,42 +296,29 @@ body {
 }
 
 .side-widget-tip {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 16px;
-  min-height: 100%;
-  padding: 24px;
-}
-
-.tip-topline {
-  width: 72px;
-  height: 5px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0.35));
+  padding: 18px;
 }
 
 .tip-title {
-  margin: 0;
-  font-size: 1.7rem;
+  margin: 0 0 12px;
+  font-size: 1.15rem;
   font-weight: 900;
-  line-height: 1.1;
+  line-height: 1.2;
   color: #ffffff;
 }
 
 .tip-content-box {
-  padding: 18px 18px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.14);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.10);
+  border-left: 4px solid rgba(255,255,255,0.35);
 }
 
 .tip-copy {
   margin: 0;
-  color: rgba(255,255,255,0.98);
-  font-size: 1.08rem;
-  line-height: 1.7;
+  color: rgba(255,255,255,0.96);
+  font-size: 0.95rem;
+  line-height: 1.5;
   font-weight: 500;
 }
 
@@ -802,7 +789,7 @@ body {
 
 .quiz-layout {
   display: grid;
-  grid-template-columns: 0.42fr 0.58fr;
+  grid-template-columns: 280px 1fr;
   gap: 18px;
 }
 
