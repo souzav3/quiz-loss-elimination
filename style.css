@@ -762,7 +762,7 @@ body {
 
 .quiz-layout {
   display: grid;
-  grid-template-columns: 0.36fr 0.64fr;
+  grid-template-columns: 0.42fr 0.58fr;
   gap: 18px;
 }
 
