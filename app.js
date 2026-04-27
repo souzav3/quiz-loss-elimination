@@ -444,8 +444,8 @@ function renderQuestion() {
           <div class="side-widget secondary">
           <div class="side-widget-logo-wrap">
         <img src="${theme.logo}" alt="Logo ${state.selectedModule.name}" class="side-widget-logo">
+
 <div class="side-widget secondary side-widget-tip">
-  <div class="tip-topline"></div>
   <h4 class="tip-title">${questionTip.title}</h4>
 
   <div class="tip-content-box">
