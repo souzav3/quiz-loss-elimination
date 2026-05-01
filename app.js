@@ -2,6 +2,12 @@ const app = document.getElementById("app");
 const root = document.documentElement;
 const confettiLayer = document.getElementById("confetti-layer");
 
+const competitiveToggle = document.getElementById("competitiveToggle");
+const nameModal = document.getElementById("nameModal");
+const participantNameInput = document.getElementById("participantNameInput");
+const participantAreaLabel = document.getElementById("participantAreaLabel");
+const participantModeLabel = document.getElementById("participantModeLabel");
+
 const moduleThemes = {
   phc: {
     logo: "assets/logos/phc.png",
@@ -50,7 +56,11 @@ const state = {
   currentQuestionIndex: 0,
   answers: [],
   selectedOptionIndex: null,
-  quizMode: 3
+  quizMode: 3,
+  competitiveMode: JSON.parse(localStorage.getItem("quizCompetitiveModeEnabled") || "false"),
+  participantName: "",
+  pendingModuleId: null,
+  resultSaved: false
 };
 
 function shuffleArray(arr) {
@@ -177,6 +187,92 @@ function getQuestionTip(type) {
   };
 }
 
+function getModeLabel() {
+  return state.quizMode === 9 ? "6W2H completo" : "Rápido • 3 perguntas";
+}
+
+function updateCompetitiveToggleUI() {
+  if (!competitiveToggle) return;
+
+  competitiveToggle.textContent = `🏆 Modo competitivo: ${state.competitiveMode ? "ON" : "OFF"}`;
+  competitiveToggle.classList.toggle("active", state.competitiveMode);
+}
+
+function toggleCompetitiveMode() {
+  state.competitiveMode = !state.competitiveMode;
+  localStorage.setItem("quizCompetitiveModeEnabled", JSON.stringify(state.competitiveMode));
+  updateCompetitiveToggleUI();
+}
+
+function handleModuleSelection(moduleId) {
+  if (state.competitiveMode) {
+    openParticipantModal(moduleId);
+    return;
+  }
+
+  startModule(moduleId);
+}
+
+function openParticipantModal(moduleId) {
+  const module = (quizData.modules || []).find(m => m.id === moduleId);
+  if (!module || !nameModal) return;
+
+  state.pendingModuleId = moduleId;
+
+  if (participantAreaLabel) {
+    participantAreaLabel.textContent = `Área: ${module.name}`;
+  }
+
+  if (participantModeLabel) {
+    participantModeLabel.textContent = `Modo: ${getModeLabel()}`;
+  }
+
+  if (participantNameInput) {
+    participantNameInput.value = "";
+  }
+
+  nameModal.classList.remove("hidden");
+
+  setTimeout(() => {
+    participantNameInput?.focus();
+  }, 50);
+}
+
+function closeParticipantModal() {
+  state.pendingModuleId = null;
+  if (nameModal) {
+    nameModal.classList.add("hidden");
+  }
+}
+
+function confirmParticipantName() {
+  const typedName = (participantNameInput?.value || "").trim();
+
+  if (!typedName) {
+    alert("Digite o nome do participante para continuar.");
+    participantNameInput?.focus();
+    return;
+  }
+
+  state.participantName = typedName;
+  const moduleId = state.pendingModuleId;
+
+  closeParticipantModal();
+
+  if (moduleId) {
+    startModule(moduleId);
+  }
+}
+
+function saveCompetitiveResult(result) {
+  const storageKey = "quizCompetitiveResults";
+  const existingResults = JSON.parse(localStorage.getItem(storageKey) || "[]");
+
+  existingResults.push(result);
+
+  localStorage.setItem(storageKey, JSON.stringify(existingResults));
+}
+
 function goHome() {
   state.selectedModule = null;
   state.selectedGroups = [];
@@ -184,9 +280,11 @@ function goHome() {
   state.currentQuestionIndex = 0;
   state.answers = [];
   state.selectedOptionIndex = null;
+  state.resultSaved = false;
 
   applyTheme("logistica");
-
+  updateCompetitiveToggleUI();
+  
   renderScreen(`
     <section class="hero">
       <div class="hero-card">
@@ -333,17 +431,17 @@ function activateModuleCard(event, moduleId) {
   const isChallengeMode = state.quizMode === 9;
 
   if (!card) {
-    startModule(moduleId);
+    handleModuleSelection(moduleId);
     return;
   }
 
   if (isChallengeMode) {
     card.classList.add("module-card-activated");
     setTimeout(() => {
-      startModule(moduleId);
+      handleModuleSelection(moduleId);
     }, 380);
   } else {
-    startModule(moduleId);
+    handleModuleSelection(moduleId);
   }
 }
 
@@ -416,6 +514,8 @@ function startModule(moduleId) {
   state.answers = [];
   state.selectedOptionIndex = null;
 
+  state.resultSaved = false;
+  
   renderQuestion();
 }
 function renderQuestion() {
@@ -602,6 +702,22 @@ function renderResult() {
   const percent = Math.round((hits / total) * 100);
   const angle = Math.round((percent / 100) * 360);
 
+  if (state.competitiveMode && state.participantName && !state.resultSaved) {
+  saveCompetitiveResult({
+    nome: state.participantName,
+    area: state.selectedModule?.name || "",
+    areaId: state.selectedModule?.id || "",
+    modo: getModeLabel(),
+    cenario: state.selectedGroups?.[0]?.title || "",
+    acertos: hits,
+    totalPerguntas: total,
+    percentual: percent,
+    dataHora: new Date().toISOString()
+  });
+
+  state.resultSaved = true;
+}
+
   if (percent >= 85) {
     launchConfetti();
   }
@@ -697,6 +813,11 @@ window.submitAnswer = submitAnswer;
 window.nextQuestion = nextQuestion;
 window.setQuizMode = setQuizMode;
 window.activateModuleCard = activateModuleCard;
+window.toggleCompetitiveMode = toggleCompetitiveMode;
+window.handleModuleSelection = handleModuleSelection;
+window.openParticipantModal = openParticipantModal;
+window.closeParticipantModal = closeParticipantModal;
+window.confirmParticipantName = confirmParticipantName;
 
 applyTheme("logistica");
 goHome();
