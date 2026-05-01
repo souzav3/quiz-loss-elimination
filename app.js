@@ -284,7 +284,7 @@ function goHome() {
 
   applyTheme("logistica");
   updateCompetitiveToggleUI();
-  
+
   renderScreen(`
     <section class="hero">
       <div class="hero-card">
@@ -453,7 +453,6 @@ function startModule(moduleId) {
 
   const requiredQuestions = state.quizMode === 9 ? 8 : 3;
 
-  // filtra apenas grupos com perguntas suficientes para o modo escolhido
   const eligibleGroups = (module.groups || []).filter(group =>
     Array.isArray(group.questions) && group.questions.length >= requiredQuestions
   );
@@ -479,15 +478,13 @@ function startModule(moduleId) {
 
   state.selectedModule = module;
 
-  // sorteia apenas 1 cenário
   const selectedGroup = pickRandomItems(eligibleGroups, 1)[0];
   state.selectedGroups = [selectedGroup];
 
   let selectedQuestions;
 
   if (state.quizMode === 9) {
-    // pega todas as perguntas do cenário
-   selectedQuestions = selectedGroup.questions.slice(0, 8).map(question => ({
+    selectedQuestions = selectedGroup.questions.slice(0, 8).map(question => ({
       groupId: selectedGroup.id,
       groupTitle: selectedGroup.title,
       scenario: selectedGroup.scenario,
@@ -497,7 +494,6 @@ function startModule(moduleId) {
       options: shuffleArray(question.options)
     }));
   } else {
-    // sorteia apenas 3 perguntas do cenário
     selectedQuestions = pickRandomItems(selectedGroup.questions, 3).map(question => ({
       groupId: selectedGroup.id,
       groupTitle: selectedGroup.title,
@@ -513,11 +509,11 @@ function startModule(moduleId) {
   state.currentQuestionIndex = 0;
   state.answers = [];
   state.selectedOptionIndex = null;
-
   state.resultSaved = false;
-  
+
   renderQuestion();
 }
+
 function renderQuestion() {
   const total = state.selectedQuestions.length;
   const index = state.currentQuestionIndex;
@@ -703,20 +699,20 @@ function renderResult() {
   const angle = Math.round((percent / 100) * 360);
 
   if (state.competitiveMode && state.participantName && !state.resultSaved) {
-  saveCompetitiveResult({
-    nome: state.participantName,
-    area: state.selectedModule?.name || "",
-    areaId: state.selectedModule?.id || "",
-    modo: getModeLabel(),
-    cenario: state.selectedGroups?.[0]?.title || "",
-    acertos: hits,
-    totalPerguntas: total,
-    percentual: percent,
-    dataHora: new Date().toISOString()
-  });
+    saveCompetitiveResult({
+      nome: state.participantName,
+      area: state.selectedModule?.name || "",
+      areaId: state.selectedModule?.id || "",
+      modo: getModeLabel(),
+      cenario: state.selectedGroups?.[0]?.title || "",
+      acertos: hits,
+      totalPerguntas: total,
+      percentual: percent,
+      dataHora: new Date().toISOString()
+    });
 
-  state.resultSaved = true;
-}
+    state.resultSaved = true;
+  }
 
   if (percent >= 85) {
     launchConfetti();
@@ -819,5 +815,6 @@ window.openParticipantModal = openParticipantModal;
 window.closeParticipantModal = closeParticipantModal;
 window.confirmParticipantName = confirmParticipantName;
 
+updateCompetitiveToggleUI();
 applyTheme("logistica");
 goHome();
