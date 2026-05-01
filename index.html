@@ -24,6 +24,14 @@
 
   <div class="app-shell">
     <header class="topbar">
+      <button
+    id="competitiveToggle"
+    class="competitive-pill"
+    type="button"
+    onclick="toggleCompetitiveMode()"
+  >
+    🏆 Modo competitivo: OFF
+  </button>
       <div class="brand-wrap">
         <div class="brand-badge">
           <img src="assets/logos/pillar.png" alt="Logo do Pilar" class="brand-logo">
@@ -46,6 +54,34 @@
   <div id="confetti-layer" class="confetti-layer"></div>
 
   <!-- IMPORTANTE: data.js antes de app.js -->
+  <div id="nameModal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <h3>Modo competitivo</h3>
+    <p>Informe o nome do participante para registrar o resultado desta rodada.</p>
+
+    <div class="modal-meta">
+      <span id="participantAreaLabel">Área: -</span>
+      <span id="participantModeLabel">Modo: -</span>
+    </div>
+
+    <input
+      id="participantNameInput"
+      class="modal-input"
+      type="text"
+      placeholder="Digite o nome do participante"
+      maxlength="60"
+    />
+
+    <div class="modal-actions">
+      <button type="button" class="btn btn-light" onclick="closeParticipantModal()">
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-primary" onclick="confirmParticipantName()">
+        Confirmar
+      </button>
+    </div>
+  </div>
+</div>
   <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
