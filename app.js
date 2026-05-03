@@ -188,7 +188,7 @@ function getQuestionTip(type) {
 }
 
 function getModeLabel() {
-  return state.quizMode === 9 ? "6W2H completo" : "Rápido • 3 perguntas";
+  return state.quizMode === 9 ? "6W2H completo" : "Rápido (3 perguntas)";
 }
 
 function updateCompetitiveToggleUI() {
