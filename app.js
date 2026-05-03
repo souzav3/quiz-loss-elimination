@@ -403,7 +403,7 @@ function renderModules() {
           class="btn ${state.quizMode === 3 ? "btn-primary" : "btn-light"}"
           onclick="setQuizMode(3)"
         >
-          Modo rápido • 3 perguntas
+          Modo rápido (3 perguntas)
         </button>
 
         <button
