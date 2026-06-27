@@ -18,9 +18,9 @@
   </xml><![endif]-->
 </head>
 <body>
-  <div class="bg-grid"></div>
-  <div class="bg-orb orb-1"></div>
-  <div class="bg-orb orb-2"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-orb orb-1" aria-hidden="true"></div>
+  <div class="bg-orb orb-2" aria-hidden="true"></div>
 
   <div class="app-shell">
     <header class="topbar">
@@ -36,12 +36,11 @@
       </div>
 
       <div class="topbar-right">
-        <button
-          id="competitiveToggle"
-          class="competitive-pill"
-          type="button"
-          onclick="toggleCompetitiveMode()"
-        >
+        <button id="rankingBtn" class="ghost-pill" type="button" data-action="open-ranking">
+          🏅 Ranking
+        </button>
+
+        <button id="competitiveToggle" class="competitive-pill" type="button" data-action="toggle-competitive">
           🏆 Modo competitivo: OFF
         </button>
 
@@ -54,11 +53,11 @@
     <main id="app" class="app"></main>
   </div>
 
-  <div id="confetti-layer" class="confetti-layer"></div>
+  <div id="confetti-layer" class="confetti-layer" aria-hidden="true"></div>
 
-  <div id="nameModal" class="modal-overlay hidden">
+  <div id="nameModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="nameModalTitle">
     <div class="modal-card">
-      <h3>Modo competitivo</h3>
+      <h3 id="nameModalTitle">Modo competitivo</h3>
       <p>Informe o nome do participante para registrar o resultado desta rodada.</p>
 
       <div class="modal-meta">
@@ -72,14 +71,17 @@
         type="text"
         placeholder="Digite o nome do participante"
         maxlength="60"
+        autocomplete="off"
       />
 
+      <p id="nameModalError" class="modal-error" role="alert"></p>
+
       <div class="modal-actions">
-        <button type="button" class="btn btn-light" onclick="closeParticipantModal()">
+        <button type="button" class="btn btn-light" data-action="close-modal">
           Cancelar
         </button>
-        <button type="button" class="btn btn-primary" onclick="confirmParticipantName()">
-          Confirmar
+        <button type="button" class="btn btn-primary" data-action="confirm-name">
+          Confirmar e começar
         </button>
       </div>
     </div>
@@ -89,3 +91,4 @@
   <script src="app.js"></script>
 </body>
 </html>
+
