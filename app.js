@@ -164,30 +164,38 @@ function getQuestionTip(type) {
   const normalized = normalizeQuestionType(type);
 
   if (normalized.includes("definicao focada")) {
-    return { title: "Definição focada", text: "Estrutura de uma boa definição focada: • Perda: qual o impacto do problema? • Defeito: o que não está funcionando como deveria? • Efeito: qual fenômeno o defeito está gerando?" };
+    return {
+      title: "Definição focada", icon: "🎯",
+      intro: "Conecte os três elementos numa frase só:",
+      items: [
+        ["Perda", "Qual o impacto do problema?"],
+        ["Defeito", "O que não está funcionando como deveria?"],
+        ["Efeito", "Qual fenômeno o defeito está gerando?"]
+      ]
+    };
   }
   if (normalized.includes("o que") || normalized.includes("o quê")) {
-    return { title: "O quê", text: "Descreva quais fenômenos estão acontecendo com o componente/produto em relação às partes/componentes da máquina." };
+    return { title: "O quê", icon: "🔍", text: "Descreva quais fenômenos estão acontecendo com o componente/produto em relação às partes/componentes da máquina." };
   }
   if (normalized.includes("como")) {
-    return { title: "Como", text: "Descreva como o fenômeno está acontecendo." };
+    return { title: "Como", icon: "⚙️", text: "Descreva como o fenômeno está acontecendo." };
   }
   if (normalized.includes("onde")) {
-    return { title: "Onde", text: "Quais os pontos de transformação?" };
+    return { title: "Onde", icon: "📍", text: "Quais os pontos de transformação onde o problema se manifesta?" };
   }
   if (normalized.includes("quando")) {
-    return { title: "Quando", text: "Quando o problema começou? (Start-up, operação normal, change-over, shutdown)." };
+    return { title: "Quando", icon: "⏱️", text: "Quando o problema começou? (Start-up, operação normal, change-over, shutdown.)" };
   }
   if (normalized === "qual" || normalized.includes("qual ")) {
-    return { title: "Qual", text: "Marcas, SKUs, formatos, materiais afetados, transações (e quais NÃO são)." };
+    return { title: "Qual", icon: "🏷️", text: "Marcas, SKUs, formatos, materiais afetados, transações — e quais NÃO são." };
   }
   if (normalized.includes("quem e para quem") || normalized.includes("quem para quem")) {
-    return { title: "Quem e para quem", text: "Quais linhas, sistemas, operações e departamentos tiveram o problema? Quais NÃO viram o problema?" };
+    return { title: "Quem e para quem", icon: "👥", text: "Quais linhas, sistemas, operações e departamentos tiveram o problema? Quais NÃO viram o problema?" };
   }
   if (normalized.includes("quanto")) {
-    return { title: "Quanto", text: "Quantas vezes a perda acontece? Extensão do dano por perda? Frequência?" };
+    return { title: "Quanto", icon: "📊", text: "Quantas vezes a perda acontece? Extensão do dano por perda? Frequência?" };
   }
-  return { title: "Dica", text: "Analise o cenário e escolha a alternativa que melhor descreve o problema de forma clara e objetiva." };
+  return { title: "Dica", icon: "💡", text: "Analise o cenário e escolha a alternativa que melhor descreve o problema de forma clara e objetiva." };
 }
 
 /* ----------------------- Modo competitivo --------------------------- */
@@ -440,6 +448,15 @@ function renderQuestion() {
   const theme = getTheme(state.selectedModule.id);
   const tip = getQuestionTip(question.type);
 
+  const tipBody = tip.items
+    ? `${tip.intro ? `<p class="tip-intro">${escapeHtml(tip.intro)}</p>` : ""}
+       <ul class="tip-list">
+         ${tip.items.map(([k, v]) => `
+           <li><span class="tip-key">${escapeHtml(k)}</span><span class="tip-val">${escapeHtml(v)}</span></li>
+         `).join("")}
+       </ul>`
+    : `<p class="tip-copy">${escapeHtml(tip.text)}</p>`;
+
   const optionsHtml = question.options.map((option, i) => `
     <label class="option" data-index="${i}">
       <input type="radio" name="answer" value="${i}" />
@@ -467,9 +484,15 @@ function renderQuestion() {
             <h4>Cenário sorteado</h4>
             <p><strong>${escapeHtml(question.groupTitle)}</strong></p>
           </div>
-          <div class="side-widget secondary side-widget-tip">
-            <h4 class="tip-title">${escapeHtml(tip.title)}</h4>
-            <div class="tip-content-box"><p class="tip-copy">${escapeHtml(tip.text)}</p></div>
+          <div class="tip-card">
+            <div class="tip-card-head">
+              <span class="tip-icon">${tip.icon || "💡"}</span>
+              <div class="tip-card-heading">
+                <span class="tip-eyebrow">Como responder</span>
+                <h4 class="tip-title">${escapeHtml(tip.title)}</h4>
+              </div>
+            </div>
+            <div class="tip-body">${tipBody}</div>
           </div>
         </aside>
 
@@ -659,58 +682,145 @@ function formatDate(iso) {
   return d.toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
+// Agrega as partidas por área para descobrir qual área está vencendo.
+function aggregateByArea(results) {
+  const map = {};
+  for (const r of results) {
+    const key = r.areaId || r.area || "—";
+    if (!map[key]) {
+      map[key] = { areaId: r.areaId || "", area: r.area || "Área", partidas: 0, somaPct: 0, melhor: 0, acertos: 0, perguntas: 0 };
+    }
+    const a = map[key];
+    a.partidas += 1;
+    a.somaPct += Number(r.percentual) || 0;
+    a.melhor = Math.max(a.melhor, Number(r.percentual) || 0);
+    a.acertos += Number(r.acertos) || 0;
+    a.perguntas += Number(r.totalPerguntas) || 0;
+  }
+  return Object.values(map)
+    .map(a => ({ ...a, media: Math.round(a.somaPct / a.partidas) }))
+    .sort((x, y) => (y.media - x.media) || (y.melhor - x.melhor) || (y.partidas - x.partidas));
+}
+
+function medalFor(i) {
+  return i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i + 1}º`;
+}
+
+function renderAreaRanking(results) {
+  const areas = aggregateByArea(results);
+  if (areas.length === 0) return "";
+
+  const leader = areas[0];
+  const lt = getTheme(leader.areaId);
+
+  const leaderBanner = `
+    <div class="area-leader" style="--lead1:${lt.color1}; --lead2:${lt.color2};">
+      <div class="area-leader-logo"><img src="${lt.logo}" alt="Logo ${escapeHtml(leader.area)}"></div>
+      <div class="area-leader-body">
+        <span class="area-leader-eyebrow">🏆 Área líder</span>
+        <div class="area-leader-name">${escapeHtml(leader.area)}</div>
+        <div class="area-leader-stats">
+          <span>🎮 ${leader.partidas} partida${leader.partidas !== 1 ? "s" : ""}</span>
+          <span>⭐ Melhor ${leader.melhor}%</span>
+          <span>✅ ${leader.acertos}/${leader.perguntas} acertos</span>
+        </div>
+      </div>
+      <div class="area-leader-score">
+        <b>${leader.media}%</b>
+        <small>média geral</small>
+      </div>
+    </div>`;
+
+  const list = areas.map((a, i) => {
+    const t = getTheme(a.areaId);
+    return `
+      <div class="area-rank-item ${i === 0 ? "is-leader" : ""}" style="--accent:${t.color1}; --accent2:${t.color3};">
+        <div class="area-rank-pos">${medalFor(i)}</div>
+        <div class="area-rank-logo"><img src="${t.logo}" alt="Logo ${escapeHtml(a.area)}"></div>
+        <div class="area-rank-body">
+          <div class="area-rank-head">
+            <span class="area-rank-name">${escapeHtml(a.area)}</span>
+            <span class="area-rank-media">${a.media}%</span>
+          </div>
+          <div class="area-rank-bar"><div class="area-rank-fill" style="width:${a.media}%"></div></div>
+          <div class="area-rank-meta">${a.partidas} partida${a.partidas !== 1 ? "s" : ""} · melhor ${a.melhor}% · ${a.acertos}/${a.perguntas} acertos</div>
+        </div>
+      </div>`;
+  }).join("");
+
+  return `
+    ${leaderBanner}
+    <div class="section-header section-header-light area-rank-subhead">
+      <div><h3>Classificação das áreas</h3><p>Ordenado pela média de acertos de cada área.</p></div>
+    </div>
+    <div class="area-rank-list">${list}</div>`;
+}
+
 function renderRanking() {
   applyTheme(DEFAULT_THEME_ID);
   const results = readJSON(STORAGE_RESULTS, []);
 
-  const sorted = [...results].sort((a, b) => {
+  if (results.length === 0) {
+    renderScreen(`
+      <section class="ranking-panel">
+        <div class="section-header section-header-light">
+          <div><h2>🏅 Ranking entre áreas</h2><p>Descubra qual área está vencendo o desafio.</p></div>
+        </div>
+        <div class="ranking-empty">
+          <div class="ranking-empty-icon">🏁</div>
+          <strong>Nenhuma partida registrada ainda.</strong>
+          <p>Ative o modo competitivo no topo e jogue uma rodada para a disputa entre as áreas começar.</p>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" data-action="go-modules">Jogar uma rodada</button>
+          <button type="button" class="btn btn-light" data-action="go-home">Voltar ao início</button>
+        </div>
+      </section>
+    `);
+    return;
+  }
+
+  const participants = [...results].sort((a, b) => {
     if (b.percentual !== a.percentual) return b.percentual - a.percentual;
     if (b.acertos !== a.acertos) return b.acertos - a.acertos;
     return new Date(b.dataHora) - new Date(a.dataHora);
   });
 
-  const body = sorted.length === 0
-    ? `<div class="ranking-empty">
-         <div class="ranking-empty-icon">🏁</div>
-         <strong>Nenhuma partida registrada ainda.</strong>
-         <p>Ative o modo competitivo no topo e jogue uma rodada para aparecer aqui.</p>
-       </div>`
-    : `<div class="ranking-table-wrap">
-         <table class="ranking-table">
-           <thead>
-             <tr><th>#</th><th>Participante</th><th>Área</th><th>Cenário</th><th>Modo</th><th>Acertos</th><th>%</th><th>Data</th></tr>
-           </thead>
-           <tbody>
-             ${sorted.map((r, i) => {
-               const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : (i + 1);
-               return `
-                 <tr class="${i < 3 ? "ranking-top" : ""}">
-                   <td class="ranking-pos">${medal}</td>
-                   <td>${escapeHtml(r.nome)}</td>
-                   <td>${escapeHtml(r.area)}</td>
-                   <td>${escapeHtml(r.cenario)}</td>
-                   <td>${escapeHtml(r.modo)}</td>
-                   <td>${escapeHtml(r.acertos)}/${escapeHtml(r.totalPerguntas)}</td>
-                   <td><span class="ranking-score">${escapeHtml(r.percentual)}%</span></td>
-                   <td class="ranking-date">${escapeHtml(formatDate(r.dataHora))}</td>
-                 </tr>`;
-             }).join("")}
-           </tbody>
-         </table>
-       </div>`;
+  const participantsTable = `
+    <div class="section-header section-header-light">
+      <div><h3>Partidas individuais</h3><p>${participants.length} partida${participants.length !== 1 ? "s" : ""} registrada${participants.length !== 1 ? "s" : ""} neste computador.</p></div>
+    </div>
+    <div class="ranking-table-wrap">
+      <table class="ranking-table">
+        <thead>
+          <tr><th>#</th><th>Participante</th><th>Área</th><th>Cenário</th><th>Modo</th><th>Acertos</th><th>%</th><th>Data</th></tr>
+        </thead>
+        <tbody>
+          ${participants.map((r, i) => `
+            <tr class="${i < 3 ? "ranking-top" : ""}">
+              <td class="ranking-pos">${medalFor(i)}</td>
+              <td>${escapeHtml(r.nome)}</td>
+              <td>${escapeHtml(r.area)}</td>
+              <td>${escapeHtml(r.cenario)}</td>
+              <td>${escapeHtml(r.modo)}</td>
+              <td>${escapeHtml(r.acertos)}/${escapeHtml(r.totalPerguntas)}</td>
+              <td><span class="ranking-score">${escapeHtml(r.percentual)}%</span></td>
+              <td class="ranking-date">${escapeHtml(formatDate(r.dataHora))}</td>
+            </tr>`).join("")}
+        </tbody>
+      </table>
+    </div>`;
 
   renderScreen(`
     <section class="ranking-panel">
       <div class="section-header section-header-light">
-        <div>
-          <h2>🏅 Ranking de participantes</h2>
-          <p>${sorted.length} partida${sorted.length !== 1 ? "s" : ""} registrada${sorted.length !== 1 ? "s" : ""} neste computador.</p>
-        </div>
+        <div><h2>🏅 Ranking entre áreas</h2><p>Qual área está vencendo o desafio 6W2H.</p></div>
       </div>
-      ${body}
+      ${renderAreaRanking(results)}
+      ${participantsTable}
       <div class="actions">
         <button type="button" class="btn btn-primary" data-action="go-modules">Jogar uma rodada</button>
-        ${sorted.length ? `<button type="button" class="btn btn-danger" data-action="clear-ranking">Limpar ranking</button>` : ""}
+        <button type="button" class="btn btn-danger" data-action="clear-ranking">Limpar ranking</button>
         <button type="button" class="btn btn-light" data-action="go-home">Voltar ao início</button>
       </div>
     </section>
