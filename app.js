@@ -284,13 +284,14 @@ function goHome() {
         </p>
         <div class="hero-actions">
           <button type="button" class="btn btn-primary btn-pulse" data-action="go-modules">Começar agora</button>
-          <button type="button" class="btn btn-dark" data-action="open-ranking">Ver ranking</button>
+          <button type="button" class="btn btn-outline" data-action="open-ranking">Ver ranking</button>
         </div>
       </div>
 
       <aside class="side-panel">
         <div class="metric-card">
-          Áreas disponíveis
+          <span class="metric-label">Áreas disponíveis</span>
+          <strong class="metric-number">${getModules().length}</strong>
           <div class="home-module-logos">${logos}</div>
         </div>
         <div class="feature-list">
@@ -607,7 +608,7 @@ function renderResult() {
     </div>`).join("");
 
   const rankingBtn = state.competitiveMode
-    ? `<button type="button" class="btn btn-dark" data-action="open-ranking">Ver ranking</button>`
+    ? `<button type="button" class="btn btn-outline" data-action="open-ranking">Ver ranking</button>`
     : "";
 
   renderScreen(`
@@ -794,4 +795,3 @@ nameModal?.addEventListener("click", (event) => {
 updateCompetitiveToggleUI();
 applyTheme(DEFAULT_THEME_ID);
 goHome();
-
