@@ -498,10 +498,35 @@ body {
 }
 .side-widget-logo { width: 100%; height: 100%; object-fit: contain; display: block; }
 
-.side-widget-tip { padding: 16px; }
-.tip-title { margin: 0 0 10px; font-size: 1.05rem; font-weight: 900; line-height: 1.2; color: #ffffff; }
-.tip-content-box { padding: 10px 12px; border-radius: 14px; background: rgba(255,255,255,0.10); border-left: 4px solid rgba(255,255,255,0.35); }
-.tip-copy { margin: 0; color: rgba(255,255,255,0.96); font-size: 0.92rem; line-height: 1.45; font-weight: 500; }
+/* Card de orientação da pergunta — destacado */
+.tip-card {
+  position: relative; overflow: hidden;
+  border-radius: 22px; padding: 18px;
+  background: linear-gradient(160deg, #1d3463, #15264c);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: var(--shadow-lg); color: #fff;
+}
+.tip-card::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+  background: linear-gradient(180deg, var(--theme-2), var(--theme-3));
+}
+.tip-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.tip-icon {
+  width: 48px; height: 48px; flex-shrink: 0; display: grid; place-items: center;
+  border-radius: 14px; font-size: 1.5rem;
+  background: linear-gradient(135deg, var(--theme-1), var(--theme-2));
+  box-shadow: 0 10px 20px rgba(0,0,0,0.28);
+}
+.tip-card-heading { min-width: 0; }
+.tip-eyebrow { display: block; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem; font-weight: 800; color: rgba(255,255,255,0.6); }
+.tip-title { margin: 3px 0 0; font-size: 1.28rem; font-weight: 900; line-height: 1.1; color: #fff; }
+.tip-body { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); border-radius: 14px; padding: 14px; }
+.tip-copy { margin: 0; color: rgba(255,255,255,0.92); font-size: 0.95rem; line-height: 1.55; }
+.tip-intro { margin: 0 0 10px; color: rgba(255,255,255,0.72); font-size: 0.88rem; }
+.tip-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.tip-list li { display: grid; gap: 3px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border-left: 3px solid var(--theme-3); }
+.tip-key { font-weight: 900; color: #fff; font-size: 0.92rem; }
+.tip-val { color: rgba(255,255,255,0.82); font-size: 0.88rem; line-height: 1.45; }
 
 .quiz-panel { padding: 22px; }
 
@@ -595,6 +620,60 @@ body {
 
 /* ----------------------------- Ranking --------------------------- */
 .ranking-panel { padding: 28px; }
+
+/* Banner da área líder */
+.area-leader {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  padding: 22px 24px; margin-bottom: 22px; border-radius: 24px; color: #fff;
+  background: linear-gradient(135deg, var(--lead1), var(--lead2));
+  box-shadow: var(--shadow-lg);
+}
+.area-leader::before {
+  content: ""; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.22), transparent 65%);
+}
+.area-leader > * { position: relative; z-index: 1; }
+.area-leader-logo {
+  width: 72px; height: 72px; flex-shrink: 0; border-radius: 18px; padding: 10px;
+  background: rgba(255,255,255,0.18); backdrop-filter: blur(6px); display: grid; place-items: center;
+}
+.area-leader-logo img { width: 100%; height: 100%; object-fit: contain; }
+.area-leader-body { flex: 1; min-width: 200px; }
+.area-leader-eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem; font-weight: 800; opacity: 0.92; }
+.area-leader-name { margin: 4px 0 8px; font-size: 1.9rem; font-weight: 900; line-height: 1; }
+.area-leader-stats { display: flex; gap: 10px; flex-wrap: wrap; }
+.area-leader-stats span { background: rgba(255,255,255,0.16); padding: 6px 12px; border-radius: 999px; font-size: 0.88rem; font-weight: 700; }
+.area-leader-score { text-align: center; margin-left: auto; }
+.area-leader-score b { display: block; font-size: 2.7rem; font-weight: 900; line-height: 1; }
+.area-leader-score small { opacity: 0.92; font-weight: 700; }
+
+.area-rank-subhead { margin-top: 4px; }
+
+/* Lista de áreas com barras na cor de cada área */
+.area-rank-list { display: grid; gap: 12px; margin-bottom: 22px; }
+.area-rank-item {
+  display: grid; grid-template-columns: 40px 52px 1fr; gap: 14px; align-items: center;
+  padding: 14px 16px; border-radius: 18px; background: #fbfdff; border: 1px solid #e5ecf8;
+}
+.area-rank-item.is-leader {
+  border-color: rgba(245,158,11,0.5);
+  background: linear-gradient(90deg, #fffaf0, #fbfdff);
+  box-shadow: 0 10px 24px rgba(245,158,11,0.12);
+}
+.area-rank-pos { font-size: 1.3rem; font-weight: 900; text-align: center; color: #2c3e5c; }
+.area-rank-logo {
+  width: 52px; height: 52px; border-radius: 14px; padding: 8px; display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+}
+.area-rank-logo img { width: 100%; height: 100%; object-fit: contain; }
+.area-rank-body { min-width: 0; }
+.area-rank-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+.area-rank-name { font-weight: 900; color: #173054; font-size: 1.05rem; }
+.area-rank-media { font-weight: 900; color: var(--accent); font-size: 1.1rem; }
+.area-rank-bar { height: 10px; border-radius: 999px; background: #eaf0fa; overflow: hidden; }
+.area-rank-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.5s ease; }
+.area-rank-meta { margin-top: 8px; color: #5b6d88; font-size: 0.84rem; }
 
 .ranking-empty { text-align: center; padding: 40px 20px; color: var(--text-soft); }
 .ranking-empty-icon { font-size: 3rem; margin-bottom: 12px; }
