@@ -181,6 +181,9 @@ body {
 
 .hidden { display: none !important; }
 
+/* Garante que o atributo hidden vença as regras de .btn (display:inline-flex) */
+[hidden] { display: none !important; }
+
 /* ----------------------------- Modal ----------------------------- */
 .modal-overlay {
   position: fixed; inset: 0; z-index: 60;
@@ -228,9 +231,11 @@ body {
   border: 1px solid var(--line);
   backdrop-filter: blur(14px);
   box-shadow: var(--shadow-xl);
+  display: flex;
+  flex-direction: column;
 }
 
-.screen { animation: fadeInUp 0.35s ease; }
+.screen { animation: fadeInUp 0.35s ease; flex: 1; display: flex; flex-direction: column; }
 
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(12px); }
@@ -238,7 +243,7 @@ body {
 }
 
 /* ----------------------------- Hero ------------------------------ */
-.hero { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 24px; align-items: stretch; }
+.hero { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 24px; align-items: stretch; margin-block: auto; width: 100%; }
 
 .hero-card, .side-panel, .quiz-panel, .result-panel, .alert-panel, .ranking-panel {
   background: var(--card); color: var(--text);
@@ -285,6 +290,8 @@ body {
   background: linear-gradient(135deg, var(--theme-1), var(--theme-2));
   color: white; box-shadow: 0 14px 30px rgba(37, 99, 235, 0.24);
 }
+.metric-label { font-weight: 700; opacity: 0.92; font-size: 0.95rem; }
+.metric-number { display: block; margin-top: 2px; font-size: 2.4rem; font-weight: 900; line-height: 1; }
 .metric-card strong { display: block; margin-top: 6px; font-size: 2rem; }
 
 .home-module-logos { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
@@ -397,6 +404,10 @@ body {
 .btn-accent  { color: white; background: linear-gradient(135deg, #10b981, var(--success-2)); box-shadow: 0 16px 28px rgba(34, 197, 94, 0.22); }
 .btn-light   { color: #183153; background: rgba(255,255,255,0.92); box-shadow: 0 10px 20px rgba(14, 24, 47, 0.12); }
 .btn-dark    { color: white; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.16); backdrop-filter: blur(8px); }
+
+/* Secundário para superfícies CLARAS (texto na cor do tema, legível sobre branco) */
+.btn-outline { color: var(--theme-1); background: #ffffff; border: 2px solid #d8e3f4; box-shadow: 0 10px 20px rgba(14, 24, 47, 0.08); }
+.btn-outline:hover { border-color: var(--theme-1); background: #f5f9ff; }
 
 /* Vermelho real, distinto do laranja do modo competitivo */
 .btn-danger  { color: white; background: linear-gradient(135deg, #dc2626, var(--danger)); box-shadow: 0 16px 28px rgba(220, 38, 38, 0.28); }
@@ -645,4 +656,3 @@ body {
   }
   .orb-1, .orb-2, .bg-orb { animation: none; }
 }
-
