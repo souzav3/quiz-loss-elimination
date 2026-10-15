@@ -113,97 +113,98 @@ const quizData = {
           ]
         },
         {
-          id: "fem-02",
-          title: "Jam no Stacker",
-          scenario: "Na Joa 1, em Fem Care, ocorrem paradas por jam no stacker. Durante as ocorrências, é observada variação na posição MD dos pads, podendo haver pads no mesmo slot dos K7s. O problema acontece durante a produção normal, após rejeitos e também em rodadas normais.",
-          questions: [
-            {
-              type: "O quê",
-              prompt: 'Para esse cenário, qual é o melhor "O quê"?',
-              explanation: "A resposta descreve o fenômeno observado no produto e no equipamento, sem afirmar uma causa raiz ainda não comprovada.",
-              options: [
-                { text: "Ocorrem jams no stacker, com variação na posição MD dos pads; observa-se menor distância entre pads consecutivos e, em algumas ocorrências, pads no mesmo slot dos K7s.", correct: true },
-                { text: "Os pads apresentam gramatura fora de especificação antes do corte na pouch knife.", correct: false },
-                { text: "O problema é exclusivamente uma falha de impressão na embalagem dos liners.", correct: false },
-                { text: "O stacker para somente porque os pads são rejeitados na inspeção de peso.", correct: false }
-              ]
-            },
-            {
-              type: "Como",
-              prompt: 'Para esse cenário, qual é o melhor "Como"?',
-              explanation: "A resposta descreve as condições em que o fenômeno aparece, incluindo as ocorrências após rejeitos e durante rodadas normais.",
-              options: [
-                { text: "O jam ocorre durante a produção normal, tanto após rejeitos quanto em rodadas normais, com variação observada no posicionamento dos pads na entrada dos slots.", correct: true },
-                { text: "O jam ocorre exclusivamente durante o start-up, antes de a linha entrar em produção normal.", correct: false },
-                { text: "O jam ocorre apenas quando todos os pads de uma sequência são rejeitados.", correct: false },
-                { text: "O jam acontece somente com a linha parada para limpeza programada.", correct: false }
-              ]
-            },
-            {
-              type: "Onde",
-              prompt: 'Para esse cenário, qual é o melhor "Onde"?',
-              explanation: "A resposta identifica os pontos indicados na análise: infeed, twist e entrada do stacker.",
-              options: [
-                { text: "Na infeed, na twist belt e na entrada do stacker, onde os pads devem entrar individualmente nos slots dos K7s.", correct: true },
-                { text: "Exclusivamente na pouch knife, antes das esteiras de separação.", correct: false },
-                { text: "Apenas na embalagem secundária, após a saída do stacker.", correct: false },
-                { text: "Somente na área de expedição dos pallets.", correct: false }
-              ]
-            },
-            {
-              type: "Quando",
-              prompt: 'Para esse cenário, qual é o melhor "Quando"?',
-              explanation: "A resposta diferencia o histórico de jams do período em que o problema se intensificou.",
-              options: [
-                { text: "Jams no stacker já ocorriam historicamente, mas se intensificaram em meados de maio de 2026, durante a operação normal.", correct: true },
-                { text: "O problema surgiu pela primeira vez após o último shutdown e ocorre apenas com a linha parada.", correct: false },
-                { text: "O problema ocorre exclusivamente durante change-overs, sem registros na produção normal.", correct: false },
-                { text: "As paradas aconteceram uma única vez e não voltaram a ser observadas.", correct: false }
-              ]
-            },
-            {
-              type: "Qual",
-              prompt: 'Para esse cenário, qual é o melhor "Qual"?',
-              explanation: "A resposta identifica a abrangência de produtos registrada no documento.",
-              options: [
-                { text: "O problema foi observado em todos os SKUs da Joa 1, independentemente do produto ou count produzido.", correct: true },
-                { text: "O problema acontece somente em um count específico.", correct: false },
-                { text: "O problema está restrito aos produtos recém-lançados.", correct: false },
-                { text: "O problema ocorre apenas em SKUs de menor velocidade.", correct: false }
-              ]
-            },
-            {
-              type: "Quem e para quem",
-              prompt: 'Para esse cenário, qual é o melhor "Quem e para quem"?',
-              explanation: "A resposta identifica a linha, o equipamento, o produto e a operação impactada, conforme os dados fornecidos.",
-              options: [
-                { text: "O problema ocorre no stacker da Joa 1, em Fem Care, afetando a operação da linha que produz liners.", correct: true },
-                { text: "O problema ocorre somente no setor administrativo, sem afetar a operação da linha.", correct: false },
-                { text: "O problema afeta exclusivamente a expedição, após a produção dos liners.", correct: false },
-                { text: "O problema está restrito à manutenção predial, sem paradas produtivas.", correct: false }
-              ]
-            },
-            {
-              type: "Quanto",
-              prompt: 'Para esse cenário, qual é o melhor "Quanto"?',
-              explanation: "A resposta apresenta a média registrada, a variação entre dias e o impacto em scrap, sem transformar a média em uma quantidade fixa diária.",
-              options: [
-                { text: "A média registrada é de cerca de 5 paradas por dia, com dias de crise e outros com menos de uma parada; as ocorrências também impactam o scrap de start-up e shutdown.", correct: true },
-                { text: "Ocorrem exatamente 5 paradas todos os dias, sem variação e sem geração de scrap.", correct: false },
-                { text: "Há menos de uma parada por mês, sem impacto na produção.", correct: false },
-                { text: "A perda ocorre apenas uma vez por ano, durante a manutenção geral.", correct: false }
-              ]
-            },
-            {
-              type: "Definição focada",
-              prompt: 'Para esse cenário, qual é a melhor "Definição focada"?',
-              explanation: "A definição reúne fenômeno, local, condições de ocorrência, abrangência e impacto, sem declarar uma causa raiz não demonstrada.",
-              options: [
-                { text: "Na Joa 1, ocorrem jams no stacker com variação observada na posição MD dos pads na entrada dos slots dos K7s, durante a produção normal, após rejeitos e também em rodadas normais. O fenômeno foi observado em diferentes produtos e counts, com média de cerca de 5 paradas por dia e impacto em scrap de start-up e shutdown.", correct: true },
-                { text: "Os jams ocorrem exclusivamente durante a limpeza programada e apenas em um único SKU, sem impacto na produção.", correct: false },
-                { text: "O problema se limita à impressão da embalagem, após os liners terem saído do stacker.", correct: false },
-                { text: "A causa raiz comprovada é a correia de transmissão da compression, e sua troca eliminou definitivamente todas as paradas.", correct: false }
-              ]
+         {
+  id: "fem-02",
+  title: "Jam no Stacker",
+  scenario: "Durante a produção de liners, ocorrem paradas por jam no stacker. Nas ocorrências, observa-se variação na posição dos pads e, em alguns casos, mais de um pad no mesmo slot dos K7s.",
+  questions: [
+    {
+      type: "O quê",
+      prompt: 'Qual alternativa descreve melhor o fenômeno observado?',
+      explanation: "O documento relata jams no stacker associados à variação da posição MD dos pads e à redução da distância entre pads consecutivos. Isso descreve o que foi visto, sem concluir qual é a causa raiz.",
+      options: [
+        { text: "Ocorrem jams no stacker, com variação da posição MD dos pads e menor distância entre pads consecutivos.", correct: true },
+        { text: "Ocorrem jams apenas quando os pads estão fora da especificação de dobra e caliper.", correct: false },
+        { text: "Os pads chegam regularmente espaçados ao stacker, mas são rejeitados por falha de impressão.", correct: false },
+        { text: "A linha para porque todos os pads são desviados antes de chegar à infeed do stacker.", correct: false }
+      ]
+    },
+    {
+      type: "Como",
+      prompt: 'Em que condição o jam acontece?',
+      explanation: "O problema foi observado durante a produção normal, tanto após rejeitos quanto em sequências normais de produção.",
+      options: [
+        { text: "Durante a produção normal, tanto após rejeitos quanto em rodadas normais, sem depender de uma sequência específica de rejeição.", correct: true },
+        { text: "Somente após uma sequência de rejeitos consecutivos.", correct: false },
+        { text: "Somente no start-up, antes de começar a produção normal.", correct: false },
+        { text: "Apenas durante a parada programada para limpeza do stacker.", correct: false }
+      ]
+    },
+    {
+      type: "Onde",
+      prompt: 'Quais pontos do processo devem ser observados nesse fenômeno?',
+      explanation: "A análise aponta a infeed, a twist e a entrada do stacker. Nessa região, os pads são espaçados, posicionados e direcionados para entrar individualmente nos slots.",
+      options: [
+        { text: "Infeed, twist e entrada do stacker.", correct: true },
+        { text: "Apenas a saída do stacker, depois que os pads já passaram pelos K7s.", correct: false },
+        { text: "Somente a pouch knife, sem necessidade de observar a entrada do stacker.", correct: false },
+        { text: "Apenas a esteira de separação, antes da checagem de posição MD e CD.", correct: false }
+      ]
+    },
+    {
+      type: "Quando",
+      prompt: 'Quando o problema passou a ter maior impacto?',
+      explanation: "Segundo o documento, jams já aconteciam historicamente, mas se intensificaram em meados de maio de 2026.",
+      options: [
+        { text: "Os jams já existiam, mas se intensificaram em meados de maio de 2026.", correct: true },
+        { text: "Os jams começaram somente após a elaboração do documento e ainda não afetaram a produção.", correct: false },
+        { text: "Os jams sempre tiveram a mesma frequência, sem períodos de maior impacto.", correct: false },
+        { text: "Os jams ocorrem exclusivamente durante shutdowns programados.", correct: false }
+      ]
+    },
+    {
+      type: "Qual",
+      prompt: 'O problema está restrito a algum produto ou count?',
+      explanation: "A tabela informa ocorrência em todos os SKUs da linha analisada, independentemente do produto ou count produzido.",
+      options: [
+        { text: "Não. O problema foi observado em diferentes produtos e counts, sem ficar restrito a um SKU específico.", correct: true },
+        { text: "Sim. O problema ocorre somente no count de menor velocidade.", correct: false },
+        { text: "Sim. O problema ocorre apenas em produtos recém-lançados.", correct: false },
+        { text: "Sim. O problema está restrito a um único SKU, identificado na análise.", correct: false }
+      ]
+    },
+    {
+      type: "Quem e para quem",
+      prompt: 'Qual operação é diretamente afetada?',
+      explanation: "O impacto descrito está na operação do stacker durante a produção de liners. O documento também identifica essa operação como pertencente à Joa 1, em Fem Care.",
+      options: [
+        { text: "A operação da linha de liners, que sofre paradas por jam no stacker.", correct: true },
+        { text: "Somente a inspeção final, sem paradas no stacker.", correct: false },
+        { text: "Somente a expedição, depois que os produtos deixam a linha.", correct: false },
+        { text: "Apenas a alimentação de matéria-prima, antes da formação dos pads.", correct: false }
+      ]
+    },
+    {
+      type: "Quanto",
+      prompt: 'Qual é a frequência e o impacto registrados?',
+      explanation: "A tabela registra média de cinco paradas por dia, com variação entre dias, e impacto em scrap de start-up e shutdown. Não informa uma quantidade exata de scrap.",
+      options: [
+        { text: "A média é de cerca de 5 paradas por dia, embora haja dias com mais ocorrências e dias com menos de uma parada; há impacto em scrap de start-up e shutdown.", correct: true },
+        { text: "São exatamente 5 paradas todos os dias, sem variação e sem impacto em scrap.", correct: false },
+        { text: "Ocorre aproximadamente uma parada por mês, sem efeito sobre a produção.", correct: false },
+        { text: "A análise quantificou o scrap, mas não registrou nenhuma parada.", correct: false }
+      ]
+    },
+    {
+      type: "Definição focada",
+      prompt: 'Qual alternativa reúne melhor o problema, sua condição de ocorrência e o impacto?',
+      explanation: "Uma definição focada resume o fenômeno observado, quando e onde ocorre, sua abrangência e a perda gerada. Ela não deve apresentar um plano de ação como se fosse uma causa raiz comprovada.",
+      options: [
+        { text: "Durante a produção normal de liners, ocorrem jams no stacker com variação observada na posição dos pads na entrada dos slots. As paradas acontecem após rejeitos e também em rodadas normais, em diferentes produtos e counts, com média de cerca de 5 ocorrências por dia e impacto em scrap.", correct: true },
+        { text: "Os jams ocorrem apenas no start-up de um SKU específico e não geram paradas durante a produção normal.", correct: false },
+        { text: "A troca da correia eliminou definitivamente todos os jams; por isso, não há mais perdas a investigar.", correct: false },
+        { text: "O problema é somente uma variação visual do pad, sem interferência na entrada dos slots ou na operação do stacker.", correct: false }
+          ]
             }
           ]
         }
