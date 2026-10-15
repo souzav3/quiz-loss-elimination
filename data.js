@@ -115,94 +115,94 @@ const quizData = {
         {
   id: "fem-02",
   title: "Jam no Stacker",
-  scenario: "Durante a produção de liners, ocorrem paradas por jam no stacker. Observa-se variação na posição dos pads e, em alguns casos, mais de um pad no mesmo slot do stacker.",
+  scenario: "Durante a produção de liners em Fem Care, a linha apresenta paradas por jam no stacker. Os pads observados estão dentro dos padrões de dobra (57 mm) e caliper (7 mm). No processo, eles passam pela esteira de separação e pela esteira do segundo rejeito; na infeed, seu espaçamento é aumentado e as posições MD e CD são verificadas. Em seguida, passam pela twist para entrar individualmente nos slots dos K7s. Nas ocorrências, observa-se variação na posição MD, menor distância entre pads consecutivos e, em alguns casos, pads no mesmo slot. Os pontos observados na análise são infeed, twist e entrada do stacker. O jam acontece durante a produção normal, tanto após rejeitos quanto em rodadas normais. Já havia ocorrências historicamente, mas elas se intensificaram em meados de maio de 2026. O problema foi observado em todos os SKUs analisados, independentemente do produto ou count. A média registrada é de cerca de cinco paradas por dia, embora haja dias de crise e dias de baixa ocorrência. As paradas impactam o scrap de start-up e shutdown.",
   questions: [
     {
       type: "O quê",
-      prompt: 'Qual é o melhor registro para o campo "O quê"?',
-      explanation: 'O campo "O quê" descreve o fenômeno observado no produto e no equipamento, sem antecipar uma causa raiz.',
+      prompt: 'Para esse cenário, qual é o melhor "O quê"?',
+      explanation: 'O campo "O quê" descreve o fenômeno observado no produto e no equipamento. A frequência, o local e uma possível causa devem ser tratados separadamente.',
       options: [
-        { text: "Ocorrem jams no stacker com variação da posição MD dos pads e menor distância entre pads consecutivos; também foram observados pads no mesmo slot.", correct: true },
-        { text: "O fenômeno é observado na infeed, na twist e na entrada do stacker.", correct: false },
-        { text: "São registradas, em média, cinco paradas por dia.", correct: false },
-        { text: "A troca da correia de transmissão foi definida como ação imediata.", correct: false }
+        { text: "O problema foi observado na infeed, na twist e na entrada do stacker.", correct: false },
+        { text: "Ocorrem jams no stacker com variação da posição MD e menor distância entre pads consecutivos; em algumas ocorrências, há pads no mesmo slot.", correct: true },
+        { text: "São registradas, em média, cerca de cinco paradas por dia.", correct: false },
+        { text: "A troca da correia de transmissão foi definida como ação para tratar o problema.", correct: false }
       ]
     },
     {
       type: "Como",
-      prompt: 'Qual é o melhor registro para o campo "Como"?',
-      explanation: 'O campo "Como" descreve como o fenômeno se manifesta nas condições observadas. Não deve ser preenchido apenas com o local, a frequência ou uma ação planejada.',
+      prompt: 'Para esse cenário, qual é o melhor "Como"?',
+      explanation: 'O campo "Como" registra a maneira e as condições em que o fenômeno se manifesta. A resposta correta considera que o jam ocorre durante a produção normal, após rejeitos e também em rodadas normais.',
       options: [
+        { text: "O jam acontece somente depois de uma sequência de rejeitos consecutivos.", correct: false },
+        { text: "A falha ocorre apenas no start-up, antes de a linha entrar em operação normal.", correct: false },
         { text: "Durante a produção normal, observa-se variação no espaçamento entre pads; o jam ocorre tanto após rejeitos quanto em rodadas normais, sem depender de rejeitos consecutivos.", correct: true },
-        { text: "O jam ocorre somente quando há rejeitos consecutivos; nas rodadas normais, não há ocorrência.", correct: false },
-        { text: "O fenômeno aparece na infeed, na twist e na entrada do stacker.", correct: false },
-        { text: "A média de ocorrências é de aproximadamente cinco paradas por dia.", correct: false }
+        { text: "As ocorrências se intensificaram em meados de maio de 2026.", correct: false }
       ]
     },
     {
       type: "Onde",
-      prompt: 'Qual é o melhor registro para o campo "Onde"?',
-      explanation: 'O campo "Onde" identifica os pontos do processo relacionados à manifestação do fenômeno.',
+      prompt: 'Para esse cenário, qual é o melhor "Onde"?',
+      explanation: 'O campo "Onde" aponta os locais ou etapas do processo relacionados ao fenômeno. Não deve ser preenchido com a frequência ou com os produtos afetados.',
       options: [
-        { text: "Na infeed, na twist e na entrada do stacker, onde os pads seguem para entrar individualmente nos slots dos K7s.", correct: true },
-        { text: "Durante a operação normal, após rejeitos e também em rodadas normais.", correct: false },
-        { text: "Em todos os SKUs e counts produzidos na linha analisada.", correct: false },
-        { text: "Exclusivamente na saída do stacker, depois de os pads deixarem os slots.", correct: false }
+        { text: "Na infeed, na twist e na entrada do stacker, antes da entrada individual dos pads nos slots dos K7s.", correct: true },
+        { text: "Em todos os SKUs analisados, independentemente do count.", correct: false },
+        { text: "Durante a produção normal, após rejeitos e também em rodadas normais.", correct: false },
+        { text: "Exclusivamente na embalagem final, depois da saída do stacker.", correct: false }
       ]
     },
     {
       type: "Quando",
-      prompt: 'Qual é o melhor registro para o campo "Quando"?',
-      explanation: 'O campo "Quando" registra o histórico e o período em que o problema se intensificou.',
+      prompt: 'Para esse cenário, qual é o melhor "Quando"?',
+      explanation: 'O campo "Quando" informa desde quando há registros e em que período o problema se intensificou. A média diária pertence ao campo "Quanto".',
       options: [
-        { text: "Jams no stacker já ocorriam historicamente, mas se intensificaram em meados de maio de 2026, durante a operação normal.", correct: true },
-        { text: "Os jams começaram pela primeira vez em maio de 2026; não havia ocorrências anteriores.", correct: false },
-        { text: "Ocorrem, em média, cinco paradas por dia.", correct: false },
-        { text: "O problema é observado na infeed, na twist e na entrada do stacker.", correct: false }
+        { text: "O problema surgiu pela primeira vez em maio de 2026; antes disso não havia jams no stacker.", correct: false },
+        { text: "A média registrada é de cerca de cinco paradas por dia.", correct: false },
+        { text: "O problema ocorre na infeed, na twist e na entrada do stacker.", correct: false },
+        { text: "Já havia jams no stacker historicamente, mas as ocorrências se intensificaram em meados de maio de 2026, durante a operação normal.", correct: true }
       ]
     },
     {
       type: "Qual",
-      prompt: 'Qual é o melhor registro para o campo "Qual"?',
-      explanation: 'O campo "Qual" delimita os produtos, SKUs ou counts afetados. A análise não restringe o problema a um único formato.',
+      prompt: 'Para esse cenário, qual é o melhor "Qual"?',
+      explanation: 'O campo "Qual" identifica os produtos, SKUs ou formatos afetados. As medidas de dobra e caliper ajudam a entender o caso, mas não respondem quais SKUs apresentam o problema.',
       options: [
-        { text: "O problema foi observado em todos os SKUs da linha analisada, independentemente do produto ou count produzido.", correct: true },
-        { text: "O problema foi observado somente em um SKU específico de liners.", correct: false },
-        { text: "O problema ocorre apenas no primeiro count produzido após cada change-over.", correct: false },
-        { text: "Ocorrem paradas no stacker com pads no mesmo slot.", correct: false }
+        { text: "Somente os pads com dobra ou caliper fora dos padrões apresentam o problema.", correct: false },
+        { text: "O problema foi observado em todos os SKUs analisados, independentemente do produto ou count produzido.", correct: true },
+        { text: "A operação do stacker é afetada pelas paradas durante a produção de liners.", correct: false },
+        { text: "O problema ocorre apenas no primeiro SKU produzido após um change-over.", correct: false }
       ]
     },
     {
       type: "Quem e para quem",
-      prompt: 'Qual é o melhor registro para o campo "Quem e para quem"?',
-      explanation: 'Esse campo identifica a operação e a área impactadas pela ocorrência, sem confundi-las com os produtos afetados ou a quantidade de paradas.',
+      prompt: 'Para esse cenário, qual é o melhor "Quem e para quem"?',
+      explanation: 'Esse campo identifica a linha, a operação ou a área que sofre o impacto. A abrangência dos SKUs pertence ao campo "Qual".',
       options: [
-        { text: "A ocorrência afeta a operação do stacker na linha de produção de liners em Fem Care, provocando paradas durante a produção.", correct: true },
-        { text: "A ocorrência afeta somente a expedição, sem interferir na operação do stacker.", correct: false },
-        { text: "A ocorrência afeta exclusivamente o fornecedor da correia, sem impacto na linha.", correct: false },
-        { text: "A ocorrência foi observada em todos os SKUs, independentemente do count.", correct: false }
+        { text: "Todos os SKUs analisados, independentemente do produto ou count.", correct: false },
+        { text: "Apenas o fornecedor da correia, sem impacto na produção.", correct: false },
+        { text: "A operação da linha de liners em Fem Care é impactada pelas paradas no stacker e pelas perdas associadas.", correct: true },
+        { text: "A média é de cerca de cinco paradas por dia, com variação entre os dias.", correct: false }
       ]
     },
     {
       type: "Quanto",
-      prompt: 'Qual é o melhor registro para o campo "Quanto"?',
-      explanation: 'O campo "Quanto" quantifica a frequência e descreve a extensão da perda. A tabela informa uma média, não um número fixo de paradas todos os dias, e não quantifica o scrap.',
+      prompt: 'Para esse cenário, qual é o melhor "Quanto"?',
+      explanation: 'O campo "Quanto" quantifica a frequência ou a extensão da perda. O cenário informa uma média de paradas e impacto em scrap, mas não fornece uma quantidade exata de scrap.',
       options: [
-        { text: "A média registrada é de cerca de cinco paradas por dia, com dias de crise e outros com menos de uma parada; há impacto em scrap de start-up e shutdown.", correct: true },
-        { text: "Ocorrem exatamente cinco paradas todos os dias, sem variação e sem impacto em scrap.", correct: false },
-        { text: "Há cinco pads fora de posição em cada jam, sem paradas de produção.", correct: false },
-        { text: "O fenômeno ocorre na infeed, na twist e na entrada do stacker.", correct: false }
+        { text: "A média é de cerca de cinco paradas por dia, com variação entre dias de crise e de baixa ocorrência; há impacto em scrap de start-up e shutdown.", correct: true },
+        { text: "Ocorrem exatamente cinco paradas todos os dias, sem variação.", correct: false },
+        { text: "São perdidos exatamente cinco pads por parada, sem geração de scrap no start-up ou shutdown.", correct: false },
+        { text: "As paradas ocorrem na infeed, na twist e na entrada do stacker.", correct: false }
       ]
     },
     {
       type: "Definição focada",
-      prompt: 'Qual é a melhor definição focada para esse problema?',
-      explanation: "A definição focada reúne o fenômeno observado, as condições em que ocorre, sua abrangência e o impacto. Um plano de ação não deve ser apresentado como causa raiz comprovada.",
+      prompt: 'Para esse cenário, qual é a melhor "Definição focada"?',
+      explanation: "A definição focada combina fenômeno observado, condições de ocorrência, abrangência e impacto. Ela não transforma uma ação planejada em causa raiz comprovada.",
       options: [
-        { text: "Durante a produção normal de liners, ocorrem jams no stacker com variação observada na posição MD e no espaçamento entre pads na entrada dos slots. As paradas acontecem após rejeitos e também em rodadas normais, em diferentes SKUs e counts, com média de cerca de cinco ocorrências por dia e impacto em scrap.", correct: true },
-        { text: "Os jams acontecem somente após rejeitos consecutivos, em um único SKU, sem afetar a produção normal.", correct: false },
-        { text: "A correia de transmissão é a causa raiz comprovada, e sua troca eliminou definitivamente os jams.", correct: false },
-        { text: "Os pads estão fora da especificação de dobra e caliper, por isso não chegam à entrada do stacker.", correct: false }
+        { text: "Os pads estão fora dos padrões de dobra e caliper, causando jams apenas durante o start-up de um SKU específico.", correct: false },
+        { text: "A correia de transmissão é a causa raiz comprovada dos jams, e sua troca eliminou definitivamente as paradas.", correct: false },
+        { text: "Há jams no stacker, mas eles não interrompem a produção nem geram perdas associadas.", correct: false },
+        { text: "Durante a produção normal de liners, ocorrem jams no stacker com variação observada na posição MD e no espaçamento entre pads na entrada dos slots. As ocorrências acontecem após rejeitos e também em rodadas normais, abrangem os SKUs analisados e geram, em média, cerca de cinco paradas por dia, com impacto em scrap.", correct: true }
       ]
     }
   ]
