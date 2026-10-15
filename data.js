@@ -115,7 +115,7 @@ const quizData = {
         {
   id: "fem-02",
   title: "Jam no Stacker",
-  scenario: "Durante a produção de liners em Fem Care, a linha apresenta paradas por jam no stacker. Os pads observados estão dentro dos padrões de dobra (57 mm) e caliper (7 mm). No processo, eles passam pela esteira de separação e pela esteira do segundo rejeito; na infeed, seu espaçamento é aumentado e as posições MD e CD são verificadas. Em seguida, passam pela twist para entrar individualmente nos slots dos K7s. Nas ocorrências, observa-se variação na posição MD, menor distância entre pads consecutivos e, em alguns casos, pads no mesmo slot. Os pontos observados na análise são infeed, twist e entrada do stacker. O jam acontece durante a produção normal, tanto após rejeitos quanto em rodadas normais. Já havia ocorrências historicamente, mas elas se intensificaram em meados de maio de 2026. O problema foi observado em todos os SKUs analisados, independentemente do produto ou count. A média registrada é de cerca de cinco paradas por dia, embora haja dias de crise e dias de baixa ocorrência. As paradas impactam o scrap de start-up e shutdown.",
+ scenario: "Na produção de liners em Fem Care, ocorrem jams no stacker com variação da posição MD dos pads e, às vezes, dois pads no mesmo slot. O fenômeno é observado na infeed, twist e entrada do stacker, durante a operação normal, após rejeitos ou em rodadas normais. Os jams já existiam, mas se intensificaram em maio de 2026; afetam todos os SKUs analisados. A média é de cerca de cinco paradas por dia, com dias de crise e dias de baixa ocorrência, além de impacto em scrap de start-up e shutdown.",
   questions: [
     {
       type: "O quê",
