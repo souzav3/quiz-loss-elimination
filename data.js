@@ -112,8 +112,7 @@ const quizData = {
             }
           ]
         },
-        {
-          id: "fem-02",
+        {id: "fem-02",
           title: "Jam no Stacker",
           scenario: "Durante a produção de liners, ocorrem paradas por jam no stacker. Observa-se variação na posição dos pads e, em alguns casos, mais de um pad no mesmo slot do stacker.",
           questions: [
