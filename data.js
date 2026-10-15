@@ -1,9 +1,3 @@
-You said:
-mande o codigo completo por favor
-
-chatPG said:
-Claro. Substitua o bloco inteiro de const quizData = { até }; pelo código abaixo. Ele mantém os outros módulos e o fem-01 e traz o fem-02 com perguntas voltadas a escolher o preenchimento correto de cada campo do 6W2H.
-
 const quizData = {
   modules: [
     {
