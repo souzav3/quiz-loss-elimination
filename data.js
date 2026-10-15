@@ -11,7 +11,7 @@ const quizData = {
       name: "Baby",
       description: "Exemplos específicos do módulo Baby.",
       groups: []
-    }
+    },
 {
   id: "fem-01",
   title: "Jam no Stacker",
